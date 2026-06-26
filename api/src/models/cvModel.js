@@ -104,4 +104,4 @@ const cvSchema = new mongoose.Schema({
     disponibilites: [disponibiliteSchema]
 }, { timestamps: true });
 
-module.exports = mongoose.model('cvs', cvSchema);
+module.exports = mongoose.model('Cv', cvSchema, 'cvs');
