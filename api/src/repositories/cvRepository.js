@@ -1,4 +1,5 @@
 const CV = require('../models/cvModel')
+
 const findCV = () => CV.findOne()
 
 const createCV = (data) => CV.create(data)

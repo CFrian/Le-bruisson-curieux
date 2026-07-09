@@ -12,18 +12,15 @@ const notFound = () => {
 }
 
 //Renvoie les projets visibles au public donc non archivés.
-const getAllPublic = async => {
+const getAllPublic = async () => {
     const projects = await projectRepository.findAll()
-    return project.filter((p) => !p.archive)
+    return projects.filter((p) => !p.archive)
 }
 
 //Renvoie un projet précis, ou une erreur 404 si il n'existe pas
 const getById = async (id) => {
     const project = await projectRepository.findById(id)
-    if (!project) {
-        res.json({ message: "Une erreur est survenue lors de la récupération :" })
-        notFound()
-    }
+    if (!project) notFound()
     return project
 }
 

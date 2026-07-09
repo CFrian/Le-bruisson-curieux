@@ -10,7 +10,7 @@ const getAllProjects = async (req, res, next) => {
         const projects = await projetService.getAllPublic()
         res.json(projects)
     } catch (err) {
-        next({ message: "Une erreur est survenue lors de la récupération :", err })
+        next(err)
     }
 }
 
@@ -21,7 +21,7 @@ const getOneProject = async (req, res, next) => {
         const project = await projetService.getById(req.params.id)
         res.json(project)
     } catch (err) {
-        next({ message: "Une erreur est survenue lors de la récupération :", err })
+        next(err)
     }
 }
 
@@ -32,18 +32,18 @@ const createProject = async (req, res, next) => {
         const project = await projetService.create(req.body)
         res.status(201).json({ message: "Projet créé avec succès", project })
     } catch (err) {
-        next({ message: "Une erreur est survenue lors de la création :", err })
+        next(err)
     }
 }
 
 //PATCH => /:id - mise a jour d'un projet
 const updateProject = async (req, res, next) => {
     try {
-        const project = await projetService.update(req.params.id)
+        const project = await projetService.update(req.params.id, req.body)
         res.json({ message: "Le projet a été mit à jour", project })
     }
     catch (err) {
-        next({ mesage: "Une erreur est survenue lors de la mise à jour :", err })
+        next(err)
     }
 }
 
@@ -54,7 +54,7 @@ const removeProject = async (req, res, next) => {
         res.status(204).end().json({ message: "Le projet a été supprimé avec succès" })
 
     } catch (err) {
-        next({ message: "Une erreur est survenue lors de la suppression :", err })
+        next(err)
     }
 }
 
