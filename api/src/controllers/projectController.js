@@ -41,8 +41,7 @@ const updateProject = async (req, res, next) => {
     try {
         const project = await projetService.update(req.params.id, req.body)
         res.json({ message: "Le projet a été mit à jour", project })
-    }
-    catch (err) {
+    } catch (err) {
         next(err)
     }
 }
@@ -51,8 +50,7 @@ const updateProject = async (req, res, next) => {
 const removeProject = async (req, res, next) => {
     try {
         const project = await projetService.remove(req.params.id)
-        res.status(204).end().json({ message: "Le projet a été supprimé avec succès" })
-
+        res.status(200).json({ message: "Le projet a été supprimé avec succès" })
     } catch (err) {
         next(err)
     }
