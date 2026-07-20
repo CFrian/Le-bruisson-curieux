@@ -5,11 +5,12 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authRepository = require('../repositories/authRepository')
 
+
 const generateAccessToken = (userId) => {
     return jwt.sign(
         { id: userId },
-        process.env.JWT_SERCRET,
-        { expireIn: '1h' }
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
     )
 }
 
@@ -37,7 +38,7 @@ const login = async (email, password) => {
         throw error
     }
 
-    const accesToken = generateAccessToken(user._id)
+    const accessToken = generateAccessToken(user._id)
     const refreshToken = generateRefreshToken(user._id)
 
     return {
