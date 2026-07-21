@@ -25,6 +25,9 @@ app.use('/api/auth/login', loginLimiter)  // Doit être lu avant les routes ! po
 app.use('/api/auth', authRoutes);
 app.use('/api/cv', cvRoutes);
 app.use('/api/projects', projectRoutes);
+app.get('/florian-costes-prestations', (req, res) => {
+    res.json({ message: `bienvenue sur le portfolio de ${process.env.ADMIN_NAME} - Développeur Web & Web Mobile` })
+})
 
 app.use(errorHandler);
 
