@@ -16,7 +16,10 @@ const loginLimiter = rateLimit({
     message: { message: 'Trop de tentatives, réessayez dans 15 minutes' }
 })
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true // autorise l'envoi des cookies cross-origin
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet())
