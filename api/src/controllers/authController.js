@@ -1,13 +1,10 @@
-// Reçoit les requêtes HTTP liées à l'auth, appelle le service,
-// et gère les cookies httpOnly pour les tokens.
-
 const authService = require('../services/authService');
 
-// Options communes aux deux cookies
 const cookieOptions = {
-    httpOnly: true,     // inaccessible au JavaScript front (protection XSS)
-    secure: process.env.NODE_ENV === 'production', // HTTPS uniquement en prod
-    sameSite: 'strict'  // protection CSRF
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    sameSite: 'strict'
 };
 
 // POST /api/auth/login
@@ -16,15 +13,14 @@ const login = async (req, res, next) => {
         const { email, password } = req.body;
         const { accessToken, refreshToken, mustChangePassword } = await authService.login(email, password);
 
-        // Stocke les tokens dans des cookies httpOnly
         res.cookie('accessToken', accessToken, {
             ...cookieOptions,
-            maxAge: 60 * 60 * 1000 // 1h en millisecondes
+            maxAge: 60 * 60 * 1000
         });
 
         res.cookie('refreshToken', refreshToken, {
             ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours en millisecondes
+            maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
         res.json({ message: 'Connexion réussie', mustChangePassword });
@@ -34,10 +30,38 @@ const login = async (req, res, next) => {
 };
 
 // POST /api/auth/logout
-const logout = (req, res) => {
-    res.clearCookie('accessToken', cookieOptions);
-    res.clearCookie('refreshToken', cookieOptions);
-    res.json({ message: 'Déconnexion réussie' });
+const logout = async (req, res, next) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        if (refreshToken) {
+            await authService.logout(refreshToken); // supprime le token de la base
+        }
+        res.clearCookie('accessToken', cookieOptions);
+        res.clearCookie('refreshToken', cookieOptions);
+        res.json({ message: 'Déconnexion réussie' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// POST /api/auth/refresh
+const refresh = async (req, res, next) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+        if (!refreshToken) {
+            const error = new Error('Session expirée, veuillez vous reconnecter');
+            error.statusCode = 401;
+            throw error;
+        }
+        const accessToken = await authService.refresh(refreshToken);
+        res.cookie('accessToken', accessToken, {
+            ...cookieOptions,
+            maxAge: 60 * 60 * 1000
+        });
+        res.json({ message: 'Token renouvelé' });
+    } catch (err) {
+        next(err);
+    }
 };
 
 // POST /api/auth/change-password
@@ -51,4 +75,4 @@ const changePassword = async (req, res, next) => {
     }
 };
 
-module.exports = { login, logout, changePassword };
+module.exports = { login, logout, refresh, changePassword };

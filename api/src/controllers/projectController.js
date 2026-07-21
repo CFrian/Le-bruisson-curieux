@@ -1,7 +1,7 @@
 // Reçoit la requête HTTP (req), appelle le service correspondant, et traduit le résultat (ou l'erreur) en réponse HTTP (res).
 // ne parle jamais directement à Mongoose.
 
-const projetService = require('../services/projectService')
+const projetService = require('../services/projectService');
 
 //GET => projects - liste publique des projets donc non archivés
 
@@ -12,7 +12,7 @@ const getAllProjects = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
 
 // GET => /:id - récupérer un projet précis
@@ -23,7 +23,7 @@ const getOneProject = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
 
 //POST => projects - creation d'un projet
@@ -34,7 +34,7 @@ const createProject = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
 //PATCH => /:id - mise a jour d'un projet
 const updateProject = async (req, res, next) => {
@@ -44,7 +44,7 @@ const updateProject = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
 //REMOVE => :/id - supprime un projet précis
 const removeProject = async (req, res, next) => {
@@ -54,6 +54,6 @@ const removeProject = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
-module.exports = { getAllProjects, getOneProject, createProject, updateProject, removeProject }
+module.exports = { getAllProjects, getOneProject, createProject, updateProject, removeProject };

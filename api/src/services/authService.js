@@ -4,6 +4,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authRepository = require('../repositories/authRepository')
+const refreshTokenRepository = require('../repositories/refreshTokenRepository');
 
 
 const generateAccessToken = (userId) => {
@@ -24,6 +25,7 @@ const generateRefreshToken = (userId) => {
 
 // Vérifie email + mot de passe, renvoie les deux tokens si OK
 const login = async (email, password) => {
+
     const user = await authRepository.findByEmail(email)
     if (!user) {
         const error = new Error('identifiant invalide')
@@ -32,6 +34,7 @@ const login = async (email, password) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
+
     if (!isMatch) {
         const error = new Error('identifiant invalide')
         error.statusCode = 401
@@ -41,11 +44,18 @@ const login = async (email, password) => {
     const accessToken = generateAccessToken(user._id)
     const refreshToken = generateRefreshToken(user._id)
 
+
+    await refreshTokenRepository.save(refreshToken, user._id) //sauvegarde le refresh token  !
+
     return {
         accessToken,
         refreshToken,
         mustChangePassword: user.mustChangePassword
     }
+}
+
+const logout = async (refreshToken) => {
+    await refreshTokenRepository.deleteToken(refreshToken)   // supprime le refresh token !
 }
 
 // Change le mot de passe et désactive le flag mustChangePassword
@@ -65,4 +75,18 @@ const changePassword = async (userId, newPassword) => {
     })
 }
 
-module.exports = { login, changePassword }
+const refresh = async (refreshToken) => {
+    const stored = await refreshTokenRepository.findToken(refreshToken)
+    if (!stored) {
+        const error = new Error('Session expirée, veuillez vous reconnecter')
+        error.statusCode = 401
+        throw error
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
+    return generateAccessToken(decoded.id);
+}
+
+
+
+module.exports = { login, logout, changePassword, refresh }

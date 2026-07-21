@@ -1,4 +1,4 @@
-const cvService = require('../services/cvService')
+const cvService = require('../services/cvService');
 
 const getCV = async (req, res, next) => {
     try {
@@ -7,6 +7,6 @@ const getCV = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}
+};
 
-module.exports = { getCV }
+module.exports = { getCV };

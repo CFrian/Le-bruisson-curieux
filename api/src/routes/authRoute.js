@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const authController = require('../controllers/authController')
-const requireAuth = require('../middlewares/requireAuth')
-const { body, validationResult } = require('express-validator')
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/authController');
+const requireAuth = require('../middlewares/requireAuth');
+const { body, validationResult } = require('express-validator');
 
 
 //middleware de validation de body login
@@ -10,7 +10,8 @@ const validateLogin = [
     body('email')
         .notEmpty().withMessage('Champ requis')
         .isEmail().withMessage('Email invalide')
-        .normalizeEmail(),
+        .trim()
+        .toLowerCase(),
     body('password')
         .notEmpty().withMessage('Champ requis')
         .isLength({ min: 8 }).withMessage('Minimum 8 caractères'),
@@ -27,10 +28,11 @@ const validateLogin = [
 
 
 //Route publiques
-router.post('/login', validateLogin, authController.login)
-router.post('/logout', authController.logout)
+router.post('/login', validateLogin, authController.login);
+router.post('/logout', authController.logout);
 
 //Routes protégées avec access token
-router.post('/change-password', requireAuth, authController.changePassword)
+router.post('/refresh', authController.refresh);
+router.post('/change-password', requireAuth, authController.changePassword);
 
-module.exports = router
+module.exports = router;
