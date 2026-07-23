@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 const CV = require('../src/models/cvModel');
 require('dotenv').config({ quiet: true });

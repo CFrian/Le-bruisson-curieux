@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+    --shadow-card: 0 2px 5px rgba(0, 0, 0, 0.42);
+    --shadow-cta: 0 4px 10px rgba(0, 0, 0, 0.42);
+}
+
+@layer base {
+
+    body,
+    html {
+        @apply p-0 m-0 box-border;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+nav {
+    font-family: 'Comfortaa', sans-serif;
+}
