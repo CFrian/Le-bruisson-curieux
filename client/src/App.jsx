@@ -15,11 +15,13 @@ import Footer from './components/Footer';
 // Pages publiques
 import CvPage from './pages/public/CvPage';
 import ProjectsPage from './pages/public/ProjectsPage';
-import Home from './pages/public/Home';
+import PrestationsPage from './pages/public/PrestationsPage';
 
 // Pages admin
 import LoginPage from './pages/admin/LoginPage';
 import DashboardPage from './pages/admin/DashboardPage';
+import AdminProjectsPage from './pages/admin/AdminProjectsPage';
+import ChangePasswordPage from './pages/admin/ChangePasswordPage';
 
 
 function App() {
@@ -33,14 +35,15 @@ function App() {
           <main className='flex-1'>
             <Routes>
               {/* Routes publiques */}
-              <Route path="/" element={<Home />} />
-              <Route path="/" element={<Home />} />
+              <Route path="/prestations" element={<PrestationsPage />} />
               <Route path="/formation" element={<CvPage />} />
               <Route path="/projets" element={<ProjectsPage />} />
 
               {/* Routes admin */}
               <Route path="/admin/login" element={<LoginPage />} />
               <Route path="/admin/dashboard" element={<DashboardPage />} />
+              <Route path="/admin/projets" element={<AdminProjectsPage />} />
+              <Route path="/admin/change-password" element={<ChangePasswordPage />} />
 
             </Routes>
           </main>

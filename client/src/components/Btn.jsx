@@ -1,10 +1,22 @@
 // Btn.jsx
+// Bouton générique réutilisable.
+// - path fourni → rendu comme un Link (navigation)
+// - sinon → rendu comme un <button> classique (action locale : onClick)
+// - variant="danger" → style rouge pour les actions destructives (suppression)
+
+
 import { Link } from "react-router-dom"
 
-export default function Btn({ contenu, onClick, path }) {
-    const className = "mb-10 text-2xl shadow-cta hover:shadow-card transition-shadow duration-200 p-3 flex flex-col items-center w-fit cursor-pointer"
+export default function Btn({ contenu, onClick, path, type = "button", variant = "default" }) {
+    const baseClassName = "m-5 text-2xl shadow-cta hover:shadow-card transition-shadow duration-200 p-3 flex flex-col items-center w-fit cursor-pointer"
 
-    // Si un "path" est fourni → comportement navigation (Link react-router)
+    // Variante visuelle : "danger" pour les actions destructives (supprimer)
+    const variantClassName = variant === "danger"
+        ? "bg-red-600 text-white hover:bg-red-700"
+        : ""
+
+    const className = `${baseClassName} ${variantClassName}`
+
     if (path) {
         return (
             <Link to={path} className={className}>
@@ -13,9 +25,8 @@ export default function Btn({ contenu, onClick, path }) {
         )
     }
 
-    // Sinon → comportement action locale (ex: "afficher plus", toggle, etc.)
     return (
-        <button type="button" onClick={onClick} className={className}>
+        <button type={type} onClick={onClick} className={className}>
             {contenu}
         </button>
     )

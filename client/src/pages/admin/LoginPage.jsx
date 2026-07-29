@@ -51,6 +51,7 @@ export default function LoginPage() {
                     disabled={loading}
                     className="shadow-cta hover:shadow-card active:scale-95 transition-all duration-150 p-3 w-full sm:w-50 font-semibold disabled:opacity-50"                >
                     {loading ? 'Connexion...' : 'Se connecter'}
+
                 </button>
             </form>
         </div>

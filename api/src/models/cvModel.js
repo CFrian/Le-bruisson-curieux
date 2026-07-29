@@ -12,13 +12,8 @@ const localisationSchema = new mongoose.Schema({
 
 const reseauSchema = new mongoose.Schema({
     plateforme: { type: String, required: true },
-    url: { type: String, required: true }
-});
-
-const periodeSchema = new mongoose.Schema({
-    label: { type: String, required: true },
-    dateDebut: { type: Date, required: true },
-    dateFin: { type: Date, required: true }
+    url: { type: String, required: true },
+    icon: { type: String, default: null }
 });
 
 const competenceTransverseSchema = new mongoose.Schema({
@@ -50,7 +45,6 @@ const formationSchema = new mongoose.Schema({
     dateDebut: { type: Date, required: true },
     dateFin: { type: Date, default: null },
     description: String,
-    stages: [periodeSchema]
 });
 
 const experienceSchema = new mongoose.Schema({
@@ -87,7 +81,6 @@ const contactSchema = new mongoose.Schema({
 
 const cvSchema = new mongoose.Schema({
     identite: {
-        photo: { type: String, default: null },  // URL ou chemin du fichier
         nom: { type: String, required: true },
         titre: { type: String, required: true },
         statut: String,

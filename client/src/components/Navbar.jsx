@@ -9,13 +9,13 @@ export default function Navbar() {
             <nav className='h-20 pr-10 pl-10 grid grid-cols-3 bg-black text-white text-2xl items-center'>
 
                 <div className='text-right mr-40'>
-                    <Link to="/">Florian Costes</Link>
+                    <Link to="/prestations">Florian Costes</Link>
                 </div>
 
                 <div className='flex gap-20 justify-center'>
                     {/* Liens internes (react-router) : PAS de risque de reverse tabnabbing,
                         cette règle ne concerne que les liens externes en target="_blank". */}
-                    <Link className='opacity-50 hover:opacity-100' to="/">Prestations</Link>
+                    <Link className='opacity-50 hover:opacity-100' to="/prestations">Prestations</Link>
                     <Link className='opacity-50 hover:opacity-100' to="/projets">Projets</Link>
                     <Link className='opacity-50 hover:opacity-100' to="/formation">Formation</Link>
                 </div>
