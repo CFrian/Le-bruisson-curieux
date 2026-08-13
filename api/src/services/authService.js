@@ -87,6 +87,8 @@ const refresh = async (refreshToken) => {
     return generateAccessToken(decoded.id);
 }
 
+const getUserById = async (id) => {
+    return await authRepository.findById(id);
+};
 
-
-module.exports = { login, logout, changePassword, refresh }
+module.exports = { login, logout, changePassword, refresh, getUserById }

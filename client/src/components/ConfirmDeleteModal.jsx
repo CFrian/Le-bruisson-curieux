@@ -1,6 +1,7 @@
 // Modale générique de confirmation de suppression.
 // Réutilisable pour tout type d'élément (projet, article, entrée CV...) —
 // affiche le nom/titre de l'élément ciblé pour éviter une suppression accidentelle.
+import Btn from "./Btn";
 
 export default function ConfirmDeleteModal({ isOpen, itemLabel, onConfirm, onCancel }) {
     // Si la modale n'est pas ouverte, on ne rend rien du tout

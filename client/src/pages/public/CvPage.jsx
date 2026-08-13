@@ -88,6 +88,21 @@ export default function CvPage() {
                 </div>
             </div>
 
+            {/* Blocs techniques */}
+            <div className="w-full">
+                <SectionTitle title="Compétences techniques" />
+                <div className="flex flex-col gap-4 mt-4">
+                    {cv.blocsTechniques.map((bloc) => (
+                        <div key={bloc._id} className="shadow-card p-4">
+                            <h4 className="font-bold">{bloc.contexte}</h4>
+                            <p>{bloc.technologies.join(" · ")}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+
+
             {/* Expériences */}
             <div className="w-full">
                 <SectionTitle title="Expériences" />
@@ -138,18 +153,6 @@ export default function CvPage() {
                 </div>
             </div>
 
-            {/* Blocs techniques */}
-            <div className="w-full">
-                <SectionTitle title="Compétences techniques" />
-                <div className="flex flex-col gap-4 mt-4">
-                    {cv.blocsTechniques.map((bloc) => (
-                        <div key={bloc._id} className="shadow-card p-4">
-                            <h4 className="font-bold">{bloc.contexte}</h4>
-                            <p>{bloc.technologies.join(" · ")}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
 
             {/* Langues */}
             <div className="w-full">
@@ -164,7 +167,7 @@ export default function CvPage() {
             {/* Centres d'intérêt */}
             {
                 cv.interets?.length > 0 && (
-                    <div className="w-full mb-40">
+                    <div className="w-full">
                         <SectionTitle title="Centres d'intérêt" />
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                             {cv.interets.map((interet) => (
@@ -177,6 +180,37 @@ export default function CvPage() {
                     </div>
                 )
             }
+
+            {
+                cv.disponibilites?.length > 0 && (
+                    <div className="w-full">
+                        <SectionTitle title="Disponibilités" />
+                        <div className="flex flex-col gap-4 mt-4">
+                            {cv.disponibilites.map((dispo) => (
+                                <div key={dispo._id} className="shadow-card p-4">
+                                    <h4 className="font-bold">{dispo.type}</h4>
+                                    <p className="italic">
+                                        {formatDate(dispo.dateDebut)} {dispo.dateFin && `— ${formatDate(dispo.dateFin)}`}
+                                    </p>
+                                    {dispo.note && <p className="mt-1">{dispo.note}</p>}
+                                    {dispo.formationCiblee && <p className="italic mt-1">{dispo.formationCiblee}</p>}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+
+
+            {/* Téléchargement du CV en PDF — fichier statique, pas lié aux données dynamiques du CV en ligne */}
+            <a
+                href="/files/CV_Florian-Costes.pdf"
+                download
+                className="shadow-cta hover:shadow-card transition-shadow duration-200 p-3 font-bold "
+            >
+                Télécharger le CV (PDF)
+            </a>
+
         </div >
     );
 }

@@ -102,6 +102,7 @@ export default function ProjectFormPage() {
                 <FormInput
                     label="Description"
                     id="description"
+                    as="textarea"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Description du projet"
@@ -119,6 +120,7 @@ export default function ProjectFormPage() {
                     value={lienDemo}
                     onChange={(e) => setLienDemo(e.target.value)}
                     placeholder="https://..."
+                    required={false}
                 />
                 <FormInput
                     label="Lien repo GitHub"
@@ -126,6 +128,7 @@ export default function ProjectFormPage() {
                     value={lienRepo}
                     onChange={(e) => setLienRepo(e.target.value)}
                     placeholder="https://github.com/..."
+                    required={false}
                 />
 
                 <Btn

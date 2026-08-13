@@ -30,7 +30,7 @@ const validateLogin = [
 //Route publiques
 router.post('/login', validateLogin, authController.login);
 router.post('/logout', authController.logout);
-
+router.get('/me', requireAuth, authController.me);
 //Routes protégées avec access token
 router.post('/refresh', authController.refresh);
 router.post('/change-password', requireAuth, authController.changePassword);

@@ -102,7 +102,7 @@ const cvData = {
         {
             poste: 'Auto-entrepreneur - Activité culturelle',
             contexte: 'Ateliers pédagogiques',
-            type: 'auto-entrepreneur',
+            type: 'freelance',
             dateDebut: new Date('2015-01-01'),
             dateFin: null,
             missions: ['Ateliers son/bruitage', 'Démarchage B2B structures culturelles', 'Création parcours pédagogiques']

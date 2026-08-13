@@ -9,4 +9,16 @@ const getCV = async (req, res, next) => {
     }
 };
 
-module.exports = { getCV };
+
+const updateCV = async (req, res, next) => {
+    try {
+        const updated = await cvService.updateCV(req.body)
+        res.json(updated)
+    } catch (err) {
+        next(err)
+    }
+
+}
+
+
+module.exports = { getCV, updateCV };

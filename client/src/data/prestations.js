@@ -11,12 +11,12 @@ export const prestations = [
     {
         id: "audio",
         image: soundDesignImg,
-        title: "Audio & Son",
+        title: "Audio",
         comment: "Production, mixage, sound design, identité sonore, formations — du studio à la livraison",
         items: [
             {
                 id: "production-audio",
-                title: "Production & Post-production",
+                title: "Pré-production & Post-production",
                 comment: "Enregistrement, montage, mixage — livraison aux normes Web, ciné, pub ou Podcast"
             },
             {

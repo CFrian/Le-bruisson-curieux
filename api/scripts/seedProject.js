@@ -12,7 +12,7 @@ const projectsData = [
         stack: ["HTML", "CSS", "JavaScript", "dev"],
         lienDemo: "", // à compléter si en ligne
         lienRepo: "https://github.com/CFrian/Site-Vitrine-couture", // lien GitHub du repo
-        image: "/public/atelier_couture.JPG", // à compléter une fois l'upload (multer) en place
+        image: "/images/site_couture.JPG", // à compléter une fois l'upload (multer) en place
         ordre: 1,
         archive: false
     },
@@ -22,7 +22,7 @@ const projectsData = [
         stack: ["React", "Node.js", "Express", "MongoDB", "dev"],
         lienDemo: "",
         lienRepo: "https://github.com/CFrian/Le-bruisson-curieux",
-        image: "/public/img-test_bruisson.jpg",
+        image: "/images/bruissonCurieux.png",
         ordre: 2,
         archive: false
     },
@@ -32,7 +32,7 @@ const projectsData = [
         stack: ["JavaScript", "Web Audio API", "audio", "dev"],
         lienDemo: "",
         lienRepo: "https://github.com/CFrian/Le-bruisson-curieux",
-        image: "/public/img-test_sonodeck.png",
+        image: "/images/sonodeck.png",
         ordre: 3,
         archive: false
     },

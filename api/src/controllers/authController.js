@@ -7,6 +7,27 @@ const cookieOptions = {
     sameSite: 'strict'
 };
 
+// GET /api/auth/me
+const me = async (req, res, next) => {
+    try {
+        // req.user.id vient de requireAuth (décodé depuis le JWT)
+        const user = await authService.getUserById(req.user.id);
+
+        if (!user) {
+            const error = new Error('Utilisateur introuvable');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        res.json({
+            authenticated: true,
+            mustChangePassword: user.mustChangePassword
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 // POST /api/auth/login
 const login = async (req, res, next) => {
     try {
@@ -75,4 +96,4 @@ const changePassword = async (req, res, next) => {
     }
 };
 
-module.exports = { login, logout, refresh, changePassword };
+module.exports = { login, logout, refresh, changePassword, me };

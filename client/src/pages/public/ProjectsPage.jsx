@@ -93,7 +93,7 @@ export default function ProjectsPage() {
                             title={project.titre}
                             comment={project.description}
                             stacks={project.stack.join(" - ")}
-                            path={project.lienDemo || `/projets/${project._id}`}
+                            path={project.lienRepo || `/projets/${project._id}`}
                         />
                     );
                 })}
