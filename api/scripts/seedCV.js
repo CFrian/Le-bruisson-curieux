@@ -4,6 +4,7 @@ require('dotenv').config({ quiet: true });
 
 const cvData = {
     identite: {
+        photo: null,
         nom: 'Florian Costes',
         titre: 'Développeur Web & Web Mobile',
         statut: 'en formation',

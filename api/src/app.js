@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit')
 const cvRoutes = require('./routes/cvRoute');
 const projectRoutes = require('./routes/projectRoute');
 const authRoutes = require('./routes/authRoute');
+const uploadRoutes = require('./routes/uploadRoute');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/auth/login', loginLimiter)  // Doit être lu avant les routes ! po
 app.use('/api/auth', authRoutes);
 app.use('/api/cv', cvRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/upload', uploadRoutes);
 app.get('/florian-costes-prestations', (req, res) => {
     res.json({ message: `bienvenue sur le portfolio de ${process.env.ADMIN_NAME} - Développeur Web & Web Mobile` })
 })

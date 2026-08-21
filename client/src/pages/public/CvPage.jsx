@@ -37,9 +37,10 @@ export default function CvPage() {
         <div className="flex flex-col items-center p-6 gap-12 pt-15 max-w-4xl mx-auto">
 
             {/* Identité */}
-            <SectionTitle title={cv.identite.nom} />
+            <ProfileCard image={cv.identite.photo} name={cv.identite.nom} />
             <div className="text-center">
-                <h2 className="text-2xl font-bold">{cv.identite.titre}</h2>                {cv.identite.statut && <p className="italic">{cv.identite.statut}</p>}
+                <h2 className="text-2xl font-bold">{cv.identite.titre}</h2>
+                {cv.identite.statut && <p className="italic">{cv.identite.statut}</p>}
                 {cv.identite.recherche && <p>{cv.identite.recherche}</p>}
             </div>
 

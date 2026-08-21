@@ -9,11 +9,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEditableArray } from "../../hooks/useEditableArray";
 import api from "../../api/axiosConfig";
 import FormInput from "../../components/FormInput";
 import Btn from "../../components/Btn";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
-import { useEditableArray } from "../../hooks/useEditableArray";
+import ImageUploadInput from "../../components/ImageUploadInput";
 import AccordionSection from "../../components/AccordionSection";
 
 // Fonction de scroll fluide vers le haut de la page
@@ -48,8 +49,8 @@ export default function AdminCvPage() {
     const [profil, setProfil] = useState("");
     const [email, setEmail] = useState("");
     const [telephone, setTelephone] = useState("");
-    const [zones, setZones] = useState(""); // saisi en texte "Pau, Tarbes, Lourdes", reconverti en tableau
-
+    const [zones, setZones] = useState("");
+    const [photo, setPhoto] = useState("");
 
     //tableau langues
 
@@ -85,6 +86,7 @@ export default function AdminCvPage() {
                 setCv(data);
 
                 setNom(data.identite.nom);
+                setPhoto(data.identite.photo || "");
                 setTitre(data.identite.titre);
                 setStatut(data.identite.statut || "");
                 setRecherche(data.identite.recherche || "");
@@ -164,7 +166,8 @@ export default function AdminCvPage() {
             nom,
             titre,
             statut,
-            recherche
+            recherche,
+            photo
         };
 
         // Reconstruction complète de "contact" : on garde "reseaux" et le reste de
@@ -263,6 +266,11 @@ export default function AdminCvPage() {
 
             <form onSubmit={handleSubmit} className="w-full max-w-2xl p-5 shadow-2xl gap-5 flex flex-col">
 
+                <ImageUploadInput
+                    label="Photo de profil"
+                    currentImageUrl={photo}
+                    onUploaded={(url) => setPhoto(url)}
+                />
                 <FormInput label="Nom" id="nom" value={nom}
                     onChange={(e) => setNom(e.target.value)} placeholder="Nom complet" />
 
@@ -599,7 +607,7 @@ export default function AdminCvPage() {
                 </AccordionSection>
 
                 <hr className="w-auto mb-10" />
-                
+
                 <AccordionSection title="Disponibilités">
                     {disponibilites.items.map((dispo, index) => (
                         <div key={index} className="flex flex-col gap-3 shadow-card p-3">

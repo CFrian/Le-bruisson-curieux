@@ -20,7 +20,7 @@ const requireAuth = (req, res, next) => {
         next()
     }
     catch (err) {
-        if (err.name === 'JsonWebTokenError' || err.name === 'TokenEpiredError') {
+        if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
             err.statusCode = 401
             err.message = 'Token invalide'
         }

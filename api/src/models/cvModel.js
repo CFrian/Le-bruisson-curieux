@@ -81,6 +81,7 @@ const contactSchema = new mongoose.Schema({
 
 const cvSchema = new mongoose.Schema({
     identite: {
+        photo: { type: String, default: null },
         nom: { type: String, required: true },
         titre: { type: String, required: true },
         statut: String,

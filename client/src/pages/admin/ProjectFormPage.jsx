@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import api from "../../api/axiosConfig";
 import FormInput from "../../components/FormInput";
 import Btn from "../../components/Btn";
+import ImageUploadInput from "../../components/ImageUploadInput";
 
 export default function ProjectFormPage() {
     // Si présent dans l'URL (/admin/projets/:id/modifier) → mode édition
@@ -23,6 +24,7 @@ export default function ProjectFormPage() {
     const [lienDemo, setLienDemo] = useState("");
     const [lienRepo, setLienRepo] = useState("");
     const [loading, setLoading] = useState(false);
+    const [image, setImage] = useState("");
 
     // En mode édition, on charge les données existantes du projet pour pré-remplir le formulaire
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function ProjectFormPage() {
                 setStack(project.stack.join(", ")); // tableau → texte pour l'input
                 setLienDemo(project.lienDemo || "");
                 setLienRepo(project.lienRepo || "");
+                setImage(project.image || "")
             })
             .catch(() => {
                 toast.error("Impossible de charger le projet.");
@@ -58,7 +61,8 @@ export default function ProjectFormPage() {
             description,
             stack: stackArray,
             lienDemo,
-            lienRepo
+            lienRepo,
+            image
         };
 
         try {
@@ -80,6 +84,7 @@ export default function ProjectFormPage() {
     return (
         <div className="flex flex-col items-center gap-8 p-6 pt-15">
 
+
             {/* Bouton retour vers la liste, toujours visible en haut de page */}
             <div className="w-full max-w-md">
                 <Link to="/admin/projets" className="hover:opacity-70 transition-opacity duration-200">
@@ -90,8 +95,12 @@ export default function ProjectFormPage() {
             <h1 className="text-2xl font-bold">
                 {isEditMode ? "Modifier le projet" : "Ajouter un projet"}
             </h1>
-
             <form onSubmit={handleSubmit} className="w-full max-w-md p-5 shadow-2xl gap-5 flex flex-col">
+            <ImageUploadInput
+                label="Image du projet"
+                currentImageUrl={image}
+                onUploaded={(url) => setImage(url)}
+            />
                 <FormInput
                     label="Titre"
                     id="titre"

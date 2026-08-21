@@ -25,6 +25,7 @@ import AdminProjectsPage from './pages/admin/AdminProjectsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import RedirectIfAuthenticated from './components/RedirectIfAuthenticated';
 import AdminCvPage from './pages/admin/AdminCvPage';
+import AccountSettingsPage from './pages/admin/AccountSettingsPage'
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/admin/projets/nouveau" element={<ProtectedRoute><ProjectFormPage /></ProtectedRoute>} />
             <Route path="/admin/projets/:id/modifier" element={<ProtectedRoute><ProjectFormPage /></ProtectedRoute>} />
             <Route path="/admin/cv" element={<ProtectedRoute><AdminCvPage /></ProtectedRoute>} />
+            <Route path="/admin/compte" element={<ProtectedRoute><AccountSettingsPage /></ProtectedRoute>} />
 
           </Route>
         </Routes>

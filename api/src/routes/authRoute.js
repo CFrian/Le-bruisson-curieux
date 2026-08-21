@@ -25,12 +25,28 @@ const validateLogin = [
         next()
     }
 ]
-
+const validateEmail = [
+    body('newEmail')
+        .notEmpty().withMessage('Champ requis')
+        .isEmail().withMessage('Email invalide')
+        .trim()
+        .toLowerCase(),
+    (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            const error = new Error(errors.array()[0].msg)
+            error.statusCode = 400
+            return next(error)
+        }
+        next()
+    }
+]
 
 //Route publiques
 router.post('/login', validateLogin, authController.login);
 router.post('/logout', authController.logout);
 router.get('/me', requireAuth, authController.me);
+router.patch('/email', requireAuth, validateEmail, authController.updateEmail);
 //Routes protégées avec access token
 router.post('/refresh', authController.refresh);
 router.post('/change-password', requireAuth, authController.changePassword);

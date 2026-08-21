@@ -88,12 +88,23 @@ const refresh = async (req, res, next) => {
 // POST /api/auth/change-password
 const changePassword = async (req, res, next) => {
     try {
-        const { newPassword } = req.body;
-        await authService.changePassword(req.user.id, newPassword);
+        const { oldPassword, newPassword } = req.body;
+        await authService.changePassword(req.user.id, oldPassword, newPassword);
         res.json({ message: 'Mot de passe modifié avec succès' });
     } catch (err) {
         next(err);
     }
 };
 
-module.exports = { login, logout, refresh, changePassword, me };
+const updateEmail = async (req, res, next) => {
+    try {
+        const { newEmail, currentPassword } = req.body;
+        await authService.updateEmail(req.user.id, newEmail, currentPassword);
+        res.json({ message: 'Email modifié avec succès' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+module.exports = { login, logout, refresh, changePassword, me, updateEmail };
