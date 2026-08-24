@@ -1,10 +1,12 @@
 // Gère la logique de connexion : vérification email/password,
 // génération des tokens JWT, et changement de mot de passe.
 
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const authRepository = require('../repositories/authRepository')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const authRepository = require('../repositories/authRepository');
 const refreshTokenRepository = require('../repositories/refreshTokenRepository');
+const crypto = require('crypto');
+const { Resend } = require('resend');
 
 
 const generateAccessToken = (userId) => {
@@ -120,6 +122,9 @@ const updateEmail = async (userId, newEmail, currentPassword) => {
 };
 
 
+
+
+
 const refresh = async (refreshToken) => {
     const stored = await refreshTokenRepository.findToken(refreshToken)
     if (!stored) {
@@ -138,4 +143,80 @@ const getUserById = async (id) => {
 };
 
 
-module.exports = { login, logout, changePassword, refresh, getUserById, updateEmail }
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Génère un token de reset, l'enregistre (hashé) en base avec une expiration de 15 min,
+// puis envoie un email contenant le lien avec le token EN CLAIR.
+// Le token en clair n'existe jamais en base — seul son hash y est stocké,
+// pour qu'un accès en lecture à la BDD ne permette pas de forger des liens valides.
+const forgotPassword = async (email) => {
+    const user = await authRepository.findByEmail(email);
+
+    // Ne révèle jamais si l'email existe ou non en base — sinon on donne
+    // à un attaquant un moyen de vérifier quels emails sont enregistrés
+    // (énumération de comptes). On répond "succès" dans tous les cas côté controller.
+    if (!user) return;
+
+    // Token aléatoire, imprévisible (crypto, pas Math.random qui n'est pas sécurisé)
+    const rawToken = crypto.randomBytes(32).toString('hex');
+
+    // Hash stocké en base — même principe qu'un mot de passe, jamais en clair
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+    await authRepository.updateUser(user._id, {
+        resetPasswordToken: hashedToken,
+        resetPasswordExpiresAt: Date.now() + 15 * 60 * 1000 // 15 minutes
+    });
+
+    const resetUrl = `${process.env.CLIENT_URL}/admin/reset-password?token=${rawToken}`;
+
+    await resend.emails.send({
+        from: 'onboarding@resend.dev', // à remplacer par un domaine vérifié en prod
+        to: user.email,
+        subject: 'Réinitialisation de votre mot de passe',
+        html: `
+            <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
+            <p><a href="${resetUrl}">Cliquez ici pour définir un nouveau mot de passe</a></p>
+            <p>Ce lien expire dans 15 minutes. Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
+        `
+    });
+};
+
+
+
+// Vérifie le token reçu (le hash, puis compare), applique le nouveau mot de passe,
+// invalide le token (usage unique), révoque toutes les sessions actives.
+const resetPassword = async (rawToken, newPassword) => {
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+    const user = await authRepository.findByResetToken(hashedToken);
+    if (!user) {
+        const error = new Error('Lien de réinitialisation invalide ou expiré');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+        const error = new Error('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    await authRepository.updateUser(user._id, {
+        password: hashed,
+        mustChangePassword: false,
+        resetPasswordToken: null,       // token à usage unique — invalidé après utilisation
+        resetPasswordExpiresAt: null
+    });
+
+    await refreshTokenRepository.deleteAllForUser(user._id);
+};
+
+
+
+
+module.exports = { login, logout, changePassword, refresh, getUserById, updateEmail, forgotPassword, resetPassword }
