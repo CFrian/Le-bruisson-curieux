@@ -85,7 +85,7 @@ const refresh = async (req, res, next) => {
     }
 };
 
-// POST /api/auth/change-password
+// POST /api/auth/change-password first connection
 const changePassword = async (req, res, next) => {
     try {
         const { oldPassword, newPassword } = req.body;
@@ -95,6 +95,7 @@ const changePassword = async (req, res, next) => {
         next(err);
     }
 };
+
 
 const updateEmail = async (req, res, next) => {
     try {
@@ -107,4 +108,27 @@ const updateEmail = async (req, res, next) => {
 };
 
 
-module.exports = { login, logout, refresh, changePassword, me, updateEmail };
+// POST /api/auth/forgot-password
+const forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        await authService.forgotPassword(email);
+        // Réponse identique que l'email existe ou non en base — évite l'énumération de comptes
+        res.json({ message: 'Si cet email existe, un lien de réinitialisation a été envoyé.' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// POST /api/auth/reset-password
+const resetPassword = async (req, res, next) => {
+    try {
+        const { token, newPassword } = req.body;
+        await authService.resetPassword(token, newPassword);
+        res.json({ message: 'Mot de passe réinitialisé avec succès.' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { login, logout, refresh, changePassword, me, updateEmail, forgotPassword, resetPassword };

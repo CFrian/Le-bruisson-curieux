@@ -3,7 +3,7 @@
 // En cas de succès, met à jour le contexte auth et redirige vers le dashboard.
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../api/axiosConfig';
 import { useAuth } from '../../context/AuthContext';
@@ -53,6 +53,9 @@ export default function LoginPage() {
                     {loading ? 'Connexion...' : 'Se connecter'}
 
                 </button>
+                <Link to="/admin/forgot-password" className="text-sm hover:opacity-70 transition-opacity duration-200">
+                    Mot de passe oublié ?
+                </Link>
             </form>
         </div>
     );

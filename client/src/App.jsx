@@ -26,6 +26,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import RedirectIfAuthenticated from './components/RedirectIfAuthenticated';
 import AdminCvPage from './pages/admin/AdminCvPage';
 import AccountSettingsPage from './pages/admin/AccountSettingsPage'
+import ForgotPasswordPage from './pages/admin/ForgotPasswordPage'
+import ResetPasswordPage from './pages/admin/ResetPasswordPage'
+
 
 function App() {
   return (
@@ -43,6 +46,8 @@ function App() {
             {/* Routes admin */}
             <Route path="/admin/login" element={<RedirectIfAuthenticated><LoginPage /></RedirectIfAuthenticated>} />
             <Route path="/admin/change-password" element={<ChangePasswordPage />} />
+            <Route path="/admin/forgot-password" element={<RedirectIfAuthenticated><ForgotPasswordPage /></RedirectIfAuthenticated>} />
+            <Route path="/admin/reset-password" element={<RedirectIfAuthenticated><ResetPasswordPage /></RedirectIfAuthenticated>} />
             <Route path="/admin/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/admin/projets" element={<ProtectedRoute><AdminProjectsPage /></ProtectedRoute>} />
             <Route path="/admin/projets/nouveau" element={<ProtectedRoute><ProjectFormPage /></ProtectedRoute>} />

@@ -50,7 +50,8 @@ api.interceptors.response.use(
         // - ce n'est pas la requête de login/refresh elle-même qui échoue
         //   (sinon un mauvais mot de passe déclencherait un refresh inutile)
         const isAuthRoute = originalRequest.url?.includes('/api/auth/login')
-            || originalRequest.url?.includes('/api/auth/refresh');
+            || originalRequest.url?.includes('/api/auth/refresh')
+            || originalRequest.url?.includes('/api/auth/me');
 
         if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
 
