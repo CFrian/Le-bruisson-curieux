@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: 'mysql',
-        logging: false, // si l'on change false => console.log => permet de voir le SQL généré en dev
+        logging: console.log, // si l'on change false => console.log => permet de voir le SQL généré en dev
     }
 );
 
