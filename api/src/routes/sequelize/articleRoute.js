@@ -19,6 +19,7 @@ router.get('/:id', articleController.getById);
 // Protégé (admin)
 router.post('/', requireAuth, articleController.create);
 router.put('/:id', requireAuth, articleController.update);
+router.put('/:id/tags', requireAuth, articleController.updateTags);
 router.delete('/:id', requireAuth, articleController.remove);
 
 module.exports = router;

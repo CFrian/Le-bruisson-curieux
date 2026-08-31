@@ -58,4 +58,15 @@ async function deleteArticle(id) {
     return articleRepository.remove(id);
 }
 
-module.exports = { getAllArticles, getArticleById, getArticleBySlug, createArticle, updateArticle, deleteArticle };
+
+async function syncTags(idArticle, tagIds) {
+    const article = await articleRepository.setTags(idArticle, tagIds);
+    if (!article) {
+        const err = new Error('Article introuvable');
+        err.status = 404;
+        throw err;
+    }
+    return article;
+}
+
+module.exports = { getAllArticles, getArticleById, getArticleBySlug, createArticle, updateArticle, deleteArticle, syncTags };

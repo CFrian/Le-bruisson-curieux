@@ -1,4 +1,3 @@
-// ProjectsPage.jsx
 // Page publique listant les projets, avec filtre simple par tag (dans le tableau "stack").
 // Les projets viennent de MongoDB via l'API (CRUD déjà en place côté back).
 

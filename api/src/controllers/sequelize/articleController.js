@@ -54,4 +54,14 @@ async function remove(req, res, next) {
     }
 }
 
-module.exports = { getAll, getById, getBySlug, create, update, remove };
+async function updateTags(req, res, next) {
+    try {
+        await articleService.syncTags(req.params.id, req.body.tagIds);
+        res.status(200).json({ message: 'Tags synchronisés' });
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports = { getAll, getById, getBySlug, create, update, remove, updateTags };
+

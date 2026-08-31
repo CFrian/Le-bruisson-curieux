@@ -63,4 +63,14 @@ function remove(id) {
     return Article.destroy({ where: { idArticle: id } });
 }
 
-module.exports = { findAll, findById, findBySlug, create, update, remove };
+// Remplace l'ensemble des tags associés à un article par la liste fournie.
+// Sequelize gère lui-même le diff (ajouts/retraits des lignes dans la table de jonction "concerne"),
+// méthode générée automatiquement grâce à l'association belongsToMany déclarée dans models/sequelize/index.js.
+async function setTags(idArticle, tagIds) {
+    const article = await Article.findByPk(idArticle);
+    if (!article) return null;
+    await article.setTags(tagIds);
+    return article;
+}
+
+module.exports = { findAll, findById, findBySlug, create, update, remove, setTags };

@@ -11,6 +11,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const articleRoute = require('./routes/sequelize/articleRoute');
 const tagRoute = require('./routes/sequelize/tagRoute');
 const categorieRoute = require('./routes/sequelize/categorieRoute');
+const auteurRoute = require('./routes/sequelize/auteurRoute');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(helmet())
 
 app.use('/api/auth/login', loginLimiter)  // Doit être lu avant les routes ! pour bloquer si trop de connexion
 app.use('/api/auth', authRoutes);
+app.use('/api/auteurs', auteurRoute);
 app.use('/api/articles', articleRoute);
 app.use('/api/tags', tagRoute);
 app.use('/api/categories', categorieRoute);

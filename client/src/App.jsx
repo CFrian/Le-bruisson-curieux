@@ -28,21 +28,25 @@ import AdminCvPage from './pages/admin/AdminCvPage';
 import AccountSettingsPage from './pages/admin/AccountSettingsPage'
 import ForgotPasswordPage from './pages/admin/ForgotPasswordPage'
 import ResetPasswordPage from './pages/admin/ResetPasswordPage'
-
+import ArticlesPage from './pages/public/ArticlesPage';
+import ArticlePage from './pages/public/ArticleSinglePage';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+
+
+
           {/* Toutes les routes ci-dessous partagent Navbar/Footer via PortfolioLayout */}
           <Route element={<PortfolioLayout />}>
-
             {/* Routes publiques */}
             <Route path="/prestations" element={<PrestationsPage />} />
             <Route path="/formation" element={<CvPage />} />
             <Route path="/projets" element={<ProjectsPage />} />
-
+            <Route path="/articles" element={<ArticlesPage />} />
+            <Route path="/articles/:slug" element={<ArticlePage />} />
             {/* Routes admin */}
             <Route path="/admin/login" element={<RedirectIfAuthenticated><LoginPage /></RedirectIfAuthenticated>} />
             <Route path="/admin/change-password" element={<ChangePasswordPage />} />
@@ -54,8 +58,9 @@ function App() {
             <Route path="/admin/projets/:id/modifier" element={<ProtectedRoute><ProjectFormPage /></ProtectedRoute>} />
             <Route path="/admin/cv" element={<ProtectedRoute><AdminCvPage /></ProtectedRoute>} />
             <Route path="/admin/compte" element={<ProtectedRoute><AccountSettingsPage /></ProtectedRoute>} />
-
           </Route>
+
+
         </Routes>
 
       </BrowserRouter >
