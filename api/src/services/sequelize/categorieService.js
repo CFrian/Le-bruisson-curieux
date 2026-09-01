@@ -40,6 +40,14 @@ async function updateCategorie(id, donnees) {
 
 async function deleteCategorie(id) {
     await getCategorieById(id);
+
+    const nbArticles = await categorieRepository.countArticles(id);
+    if (nbArticles > 0) {
+        const err = new Error(`Cette catégorie est utilisée par ${nbArticles} article(s). Retire-la de ces articles avant de la supprimer.`);
+        err.status = 409;
+        throw err;
+    }
+
     return categorieRepository.remove(id);
 }
 

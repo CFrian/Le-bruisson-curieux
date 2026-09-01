@@ -21,4 +21,10 @@ function remove(id) {
     return Tag.destroy({ where: { idTag: id } });
 }
 
-module.exports = { findAll, findById, create, update, remove };
+async function countArticles(idTag) {
+    const tag = await Tag.findByPk(idTag);
+    if (!tag) return 0;
+    return tag.countArticles(); // méthode générée par belongsToMany
+}
+
+module.exports = { findAll, findById, create, update, remove, countArticles };

@@ -21,4 +21,10 @@ function remove(id) {
     return Categorie.destroy({ where: { idCategorie: id } });
 }
 
-module.exports = { findAll, findById, create, update, remove };
+async function countArticles(idCategorie) {
+    const categorie = await Categorie.findByPk(idCategorie);
+    if (!categorie) return 0;
+    return categorie.countArticles(); // méthode générée par hasMany
+}
+
+module.exports = { findAll, findById, create, update, remove, countArticles };

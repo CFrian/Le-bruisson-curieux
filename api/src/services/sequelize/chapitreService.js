@@ -20,6 +20,11 @@ function validerDonnees(donnees) {
         err.status = 400;
         throw err;
     }
+    if (!Number.isInteger(donnees.ordreChap) || donnees.ordreChap < 1) {
+        const err = new Error('L\'ordre du chapitre doit être un nombre entier supérieur ou égal à 1');
+        err.status = 400;
+        throw err;
+    }
 }
 
 function createChapitre(idArticle, donnees) {

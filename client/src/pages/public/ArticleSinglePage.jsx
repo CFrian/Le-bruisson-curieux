@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../api/axiosConfig";
 
-export default function ArticlePage() {
+export default function ArticleSinglePage() {
 
     const { slug } = useParams();
 

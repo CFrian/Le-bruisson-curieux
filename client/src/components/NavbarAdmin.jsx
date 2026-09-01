@@ -1,25 +1,22 @@
-// Navigation principale + accès connexion admin.
-// Icône dynamique : login si non connecté, logout si connecté.
-// Onglet "Dashboard" visible uniquement si connecté.
+// Navigation de l'espace Admin — accès rapide aux pages publiques (vérification visuelle
+// après une modification) + icône dynamique login/logout, même logique que Navbar.jsx.
 
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/axiosConfig'
-import bruissonLogo from "/images/bruissonCurieux.png" // chemin générique, à remplacer
+import bruissonLogo from "/images/bruissonCurieux.png"
 
-export default function Navbar() {
+export default function NavbarAdmin() {
     const { isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
 
-    // Déclenchée au clic sur l'icône quand l'utilisateur est connecté.
-    // Appelle la route back de déconnexion, met à jour le contexte, puis redirige.
     const handleLogout = async () => {
         try {
             await api.post('/api/auth/logout');
             logout();
             toast.success('Déconnexion réussie.');
-            navigate('/prestations');
+            navigate('/accueil');
         } catch (err) {
             toast.error('Erreur lors de la déconnexion.');
         }
@@ -28,19 +25,15 @@ export default function Navbar() {
     return (
         <header>
             <nav className='h-20 pr-10 pl-10 flex items-center bg-black text-white text-2xl'>
-                <Link to="/" aria-label="Retour à l'accueil du Bruisson Curieux">
+                <Link to="/accueil" aria-label="Retour à l'accueil du Bruisson Curieux">
                     <img src={bruissonLogo} alt="Vers accueil Bruisson Curieux" className="w-15 h-15" />
                 </Link>
 
-                {/* flex-1 + justify-center → reste toujours centré dans l'espace disponible,
-        peu importe si "Dashboard" apparaît/disparaît */}
                 <div className='flex-1 flex justify-center items-center gap-20 text-nowrap'>
-                    <Link to="/prestations">Florian Costes</Link>
-
                     <div className='flex gap-10'>
-                        <Link className='opacity-50 hover:opacity-100' to="/prestations">Prestations</Link>
                         <Link className='opacity-50 hover:opacity-100' to="/projets">Projets</Link>
                         <Link className='opacity-50 hover:opacity-100' to="/formation">Formation</Link>
+                        <Link className='opacity-50 hover:opacity-100' to="/articles">Articles</Link>
                         {isAuthenticated && (
                             <Link className='opacity-50 hover:opacity-100' to="/admin/dashboard">Dashboard</Link>
                         )}
@@ -48,7 +41,6 @@ export default function Navbar() {
                 </div>
 
                 {isAuthenticated ? (
-                    // Connecté → icône déclenche la déconnexion (button, pas un Link : c'est une action)
                     <button
                         type="button"
                         onClick={handleLogout}
@@ -58,7 +50,7 @@ export default function Navbar() {
                         <svg
                             width="60" height="60" viewBox="0 0 60 60" fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            role="img" // indique explicitement au lecteur d'écran : "ceci est une image porteuse de sens"
+                            role="img"
                             className="w-full h-full"
                         >
                             <path d="M35 15H45C46.1046 15 47 15.8954 47 17V43C47 44.1046 46.1046 45 45 45H35"
@@ -68,8 +60,6 @@ export default function Navbar() {
                         </svg>
                     </button>
                 ) : (
-                    // Non connecté → icône mène vers la page de login
-
                     <Link to="/admin/login" aria-label="Accéder à la connexion admin">
                         <svg
                             width="60" height="60" viewBox="0 0 60 60" fill="none"
@@ -85,6 +75,6 @@ export default function Navbar() {
                     </Link>
                 )}
             </nav>
-        </header >
+        </header>
     )
 }

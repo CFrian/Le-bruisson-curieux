@@ -39,7 +39,15 @@ async function updateTag(id, donnees) {
 }
 
 async function deleteTag(id) {
-    await getTagById(id);
+    await getTagById(id); // vérifie l'existence, 404 sinon
+
+    const nbArticles = await tagRepository.countArticles(id);
+    if (nbArticles > 0) {
+        const err = new Error(`Ce tag est utilisé par ${nbArticles} article(s). Retire-le de ces articles avant de le supprimer.`);
+        err.status = 409; // Conflict — le code HTTP adapté à ce type de blocage
+        throw err;
+    }
+
     return tagRepository.remove(id);
 }
 

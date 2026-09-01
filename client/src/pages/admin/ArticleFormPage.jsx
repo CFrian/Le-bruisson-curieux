@@ -1,22 +1,23 @@
 // Formulaire d'ajout OU de modification d'un article, selon la présence d'un id dans l'URL.
 // Route :id absent → création. Route :id présent → édition (pré-remplissage + PUT).
-// Ne gère que les champs propres à l'article (métadonnées + catégorie + tags) —
-// chapitres/paragraphes/médias/fiche info sont gérés séparément, comme des blocs indépendants.
+// Après création, reste sur la page (pas de redirection) pour révéler les sections
+// Fiche info / Médias / Chapitres, débloquées dès que l'article a un id.
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../api/axiosConfig";
 import FormInput from "../../components/FormInput";
 import Btn from "../../components/Btn";
+import ChapitresSection from "../../components/admin/ChapitresSection";
 
 export default function ArticleFormPage() {
-    // Si présent dans l'URL (/admin/articles/:id/modifier) → mode édition
-    // Si absent (/admin/articles/nouveau) → mode création
-    const { id } = useParams();
-    const isEditMode = Boolean(id);
+    const { id: idFromUrl } = useParams();
 
-    const navigate = useNavigate();
+    // idArticle : source unique de vérité pour "l'article existe-t-il ?"
+    // Vient de l'URL en mode édition, ou se remplit après une création réussie
+    const [idArticle, setIdArticle] = useState(idFromUrl || null);
+    const isEditMode = Boolean(idFromUrl);
 
     const [titreArticle, setTitreArticle] = useState("");
     const [slugArticle, setSlugArticle] = useState("");
@@ -35,19 +36,16 @@ export default function ArticleFormPage() {
 
     const [loading, setLoading] = useState(false);
 
-    // Chargement des listes pour les select/checkbox (catégories, auteurs, tags),
-    // dans tous les cas (création ET édition)
     useEffect(() => {
         api.get('/api/categories').then((res) => setCategories(res.data));
         api.get('/api/tags').then((res) => setTags(res.data));
         api.get('/api/auteurs').then((res) => setAuteurs(res.data));
     }, []);
 
-    // En mode édition, on charge les données existantes de l'article pour pré-remplir le formulaire
     useEffect(() => {
-        if (!isEditMode) return; // rien à charger en mode création
+        if (!isEditMode) return;
 
-        api.get(`/api/articles/${id}`)
+        api.get(`/api/articles/${idFromUrl}`)
             .then((response) => {
                 const article = response.data;
                 setTitreArticle(article.titreArticle);
@@ -64,9 +62,8 @@ export default function ArticleFormPage() {
             .catch(() => {
                 toast.error("Impossible de charger l'article.");
             });
-    }, [id, isEditMode]);
+    }, [idFromUrl, isEditMode]);
 
-    // Coche/décoche un tag dans la sélection multiple
     const toggleTag = (tagId) => {
         setSelectedTagIds((prev) =>
             prev.includes(tagId)
@@ -94,23 +91,20 @@ export default function ArticleFormPage() {
         };
 
         try {
-            let articleId = id;
+            let currentId = idArticle;
 
-            if (isEditMode) {
-                await api.put(`/api/articles/${id}`, articleData);
+            if (idArticle) {
+                await api.put(`/api/articles/${idArticle}`, articleData);
                 toast.success("Article modifié avec succès.");
             } else {
                 const response = await api.post('/api/articles', articleData);
-                articleId = response.data.idArticle;
-                toast.success("Article créé avec succès.");
+                currentId = response.data.idArticle;
+                setIdArticle(currentId);
+                toast.success("Article créé — tu peux maintenant ajouter du contenu ci-dessous.");
             }
 
-            // Synchronisation des tags — décision simple : on remplace tout à chaque sauvegarde
-            // plutôt que de calculer un diff précis (ajouts/retraits), pas critique en volume ici.
-            // (nécessite un endpoint de synchronisation, à ajouter côté back si pas déjà prévu)
-            await api.put(`/api/articles/${articleId}/tags`, { tagIds: selectedTagIds });
-
-            navigate('/admin/articles');
+            await api.put(`/api/articles/${currentId}/tags`, { tagIds: selectedTagIds });
+            // Pas de navigate() — on reste sur la page, les sections en dessous se débloquent
         } catch (err) {
             toast.error(err.response?.data?.message || "Erreur lors de l'enregistrement.");
         } finally {
@@ -203,6 +197,7 @@ export default function ArticleFormPage() {
                         ))}
                     </select>
                 </div>
+
                 <div className="flex flex-col gap-2">
                     <label htmlFor="idAuteur">Auteur</label>
                     <select
@@ -248,10 +243,24 @@ export default function ArticleFormPage() {
                 />
 
                 <Btn
-                    contenu={loading ? "Enregistrement..." : isEditMode ? "Enregistrer les modifications" : "Créer l'article"}
+                    contenu={loading ? "Enregistrement..." : idArticle ? "Enregistrer les modifications" : "Créer l'article"}
                     type="submit"
                 />
             </form>
+
+            {/* Section Chapitres — grisée et non cliquable tant que l'article n'existe pas */}
+            <div
+                className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"
+                    }`}
+            >
+                {!idArticle && (
+                    <p className="text-sm italic text-center mb-2">
+                        Enregistre d'abord l'article pour débloquer cette section.
+                    </p>
+                )}
+                <ChapitresSection idArticle={idArticle} />
+            </div>
+
         </div>
     );
 }

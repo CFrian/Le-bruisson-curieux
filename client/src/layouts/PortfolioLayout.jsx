@@ -5,7 +5,7 @@
 // sans dupliquer App.jsx ni casser l'existant.
 
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavbarPortfolio";
 import Footer from "../components/Footer";
 
 export default function PortfolioLayout() {
