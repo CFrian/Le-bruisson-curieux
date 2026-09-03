@@ -1,4 +1,5 @@
 const paragrapheRepository = require('../../repositories/sequelize/paragrapheRepository');
+const { sanitize, throwValidationError } = require('../../utils/validators');
 
 function getParagraphesByChapitre(idChapitre) {
     return paragrapheRepository.findAllByChapitre(idChapitre);
@@ -6,31 +7,41 @@ function getParagraphesByChapitre(idChapitre) {
 
 async function getParagrapheById(id) {
     const paragraphe = await paragrapheRepository.findById(id);
-    if (!paragraphe) {
-        const err = new Error('Paragraphe introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!paragraphe) throwValidationError('Paragraphe introuvable', 404);
     return paragraphe;
 }
 
-function validerDonnees(donnees) {
+function sanitizeAndValidate(donnees) {
+    const contenuParagraphe = sanitize(donnees.contenuParagraphe);
+
+    if (!contenuParagraphe) throwValidationError('Le contenu du paragraphe est obligatoire');
     if (donnees.ordreParagraphe === undefined || donnees.ordreParagraphe === null) {
-        const err = new Error('L\'ordre du paragraphe est obligatoire');
-        err.status = 400;
-        throw err;
+        throwValidationError('L\'ordre du paragraphe est obligatoire');
     }
+    if (!Number.isInteger(donnees.ordreParagraphe) || donnees.ordreParagraphe < 1) {
+        throwValidationError('L\'ordre du paragraphe doit être un nombre entier supérieur ou égal à 1');
+    }
+
+    return { contenuParagraphe, ordreParagraphe: donnees.ordreParagraphe };
 }
 
-function createParagraphe(idChapitre, donnees) {
-    validerDonnees(donnees);
-    return paragrapheRepository.create(idChapitre, donnees);
+async function createParagraphe(idChapitre, donnees) {
+    const clean = sanitizeAndValidate(donnees);
+
+    const existant = await paragrapheRepository.findByChapitreAndOrdre(idChapitre, clean.ordreParagraphe);
+    if (existant) {
+        const err = new Error(`Un paragraphe avec l'ordre ${clean.ordreParagraphe} existe déjà pour ce chapitre.`);
+        err.statusCode = 409;
+        throw err;
+    }
+
+    return paragrapheRepository.create(idChapitre, clean);
 }
 
 async function updateParagraphe(id, donnees) {
     await getParagrapheById(id);
-    validerDonnees(donnees);
-    return paragrapheRepository.update(id, donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return paragrapheRepository.update(id, clean);
 }
 
 async function deleteParagraphe(id) {

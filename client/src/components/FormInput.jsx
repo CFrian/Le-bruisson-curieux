@@ -1,4 +1,3 @@
-// FormInput.jsx
 // Champ de formulaire réutilisable, utilisé dans tous les formulaires de l'app
 // (Login, ChangePassword, ProjectForm...).
 //
@@ -8,21 +7,19 @@
 // une seule ligne oblige à scroller horizontalement pour relire son texte.
 // required={false} → rend le champ optionnel (ex: lien démo, lien repo,
 // pas toujours disponibles au moment de la création d'un projet).
+// className → classes Tailwind additionnelles, fusionnées avec le style par défaut
+// (ex: bordure colorée pour distinguer visuellement une zone du formulaire).
 
-
-export default function FormInput({ label, id, type = "text", value, onChange, placeholder, as = "input", required = true }) {
+export default function FormInput({ label, id, type = "text", value, onChange, placeholder, as = "input", required = true, className = "" }) {
 
     // Même classe visuelle pour les deux versions (input et textarea),
     // pour garder un style cohérent dans tout le formulaire sans dupliquer les classes Tailwind.
-    const className = "w-full shadow-card p-3"
+    const baseClassName = `w-full shadow-card p-3 ${className}`
 
     return (
         <div className="flex flex-col gap-2">
             <label htmlFor={id}>{label}</label>
 
-            {/* Rendu conditionnel selon la valeur de "as" :
-                - "textarea" → zone de texte multiligne, hauteur de départ fixée par rows
-                - autre valeur (ou absente) → input classique, comme avant */}
             {as === "textarea" ? (
                 <textarea
                     id={id}
@@ -30,22 +27,18 @@ export default function FormInput({ label, id, type = "text", value, onChange, p
                     onChange={onChange}
                     placeholder={placeholder}
                     required={required}
-                    // rows={5} : hauteur de départ (5 lignes visibles) avant tout redimensionnement.
-                    // L'utilisateur peut ensuite agrandir manuellement la zone
-                    // grâce au comportement natif du navigateur (coin redimensionnable).
                     rows={5}
-                    className={className}
+                    className={baseClassName}
                 />
             ) : (
                 <input
                     id={id}
-                    // type reste utile ici : "email", "password", "text"... selon l'usage du champ
                     type={type}
                     value={value}
                     onChange={onChange}
                     placeholder={placeholder}
                     required={required}
-                    className={className}
+                    className={baseClassName}
                 />
             )}
         </div>

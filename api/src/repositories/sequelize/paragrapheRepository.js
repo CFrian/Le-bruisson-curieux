@@ -13,6 +13,11 @@ function findById(id) {
     });
 }
 
+
+function findByChapitreAndOrdre(idChapitre, ordreParagraphe) {
+    return Paragraphe.findOne({ where: { idChapitre, ordreParagraphe } });
+}
+
 function create(idChapitre, donnees) {
     return Paragraphe.create({ ...donnees, idChapitre });
 }
@@ -26,4 +31,4 @@ function remove(id) {
     return Paragraphe.destroy({ where: { idParagraphe: id } });
 }
 
-module.exports = { findAllByChapitre, findById, create, update, remove };
+module.exports = { findAllByChapitre, findByChapitreAndOrdre, findById, create, update, remove };

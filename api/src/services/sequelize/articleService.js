@@ -1,4 +1,5 @@
 const articleRepository = require('../../repositories/sequelize/articleRepository');
+const { isValidSlug, sanitize, throwValidationError } = require('../../utils/validators');
 
 function getAllArticles() {
     return articleRepository.findAll();
@@ -6,51 +7,47 @@ function getAllArticles() {
 
 async function getArticleById(id) {
     const article = await articleRepository.findById(id);
-    if (!article) {
-        const err = new Error('Article introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!article) throwValidationError('Article introuvable', 404);
     return article;
 }
 
 async function getArticleBySlug(slug) {
     const article = await articleRepository.findBySlug(slug);
-    if (!article) {
-        const err = new Error('Article introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!article) throwValidationError('Article introuvable', 404);
     return article;
 }
 
-function validerDonnees(donnees) {
-    if (!donnees.titreArticle || donnees.titreArticle.trim() === '') {
-        const err = new Error('Le titre est obligatoire');
-        err.status = 400;
-        throw err;
-    }
-    if (!donnees.slugArticle || donnees.slugArticle.trim() === '') {
-        const err = new Error('Le slug est obligatoire');
-        err.status = 400;
-        throw err;
-    }
-    if (!donnees.extraitArticle || donnees.extraitArticle.trim() === '') {
-        const err = new Error('L\'extrait est obligatoire');
-        err.status = 400;
-        throw err;
-    }
+function sanitizeAndValidate(donnees) {
+    const titreArticle = sanitize(donnees.titreArticle);
+    const slugArticle = sanitize(donnees.slugArticle);
+    const extraitArticle = sanitize(donnees.extraitArticle);
+    const contenuIntroArticle = sanitize(donnees.contenuIntroArticle);
+    const motDeLaFinArticle = sanitize(donnees.motDeLaFinArticle);
+
+    if (!titreArticle) throwValidationError('Le titre est obligatoire');
+    if (!slugArticle) throwValidationError('Le slug est obligatoire');
+    if (!isValidSlug(slugArticle)) throwValidationError('Le slug ne doit contenir que des minuscules, chiffres et tirets');
+    if (!extraitArticle) throwValidationError('L\'extrait est obligatoire');
+
+    return {
+        ...donnees,
+        titreArticle,
+        slugArticle,
+        extraitArticle,
+        contenuIntroArticle,
+        motDeLaFinArticle,
+    };
 }
 
 function createArticle(donnees) {
-    validerDonnees(donnees);
-    return articleRepository.create(donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return articleRepository.create(clean);
 }
 
 async function updateArticle(id, donnees) {
-    await getArticleById(id); // vérifie l'existence, sinon lève 404
-    validerDonnees({ ...donnees });
-    return articleRepository.update(id, donnees);
+    await getArticleById(id);
+    const clean = sanitizeAndValidate(donnees);
+    return articleRepository.update(id, clean);
 }
 
 async function deleteArticle(id) {
@@ -58,14 +55,9 @@ async function deleteArticle(id) {
     return articleRepository.remove(id);
 }
 
-
 async function syncTags(idArticle, tagIds) {
     const article = await articleRepository.setTags(idArticle, tagIds);
-    if (!article) {
-        const err = new Error('Article introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!article) throwValidationError('Article introuvable', 404);
     return article;
 }
 

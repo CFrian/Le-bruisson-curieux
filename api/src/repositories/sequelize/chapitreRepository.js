@@ -16,6 +16,10 @@ function findById(id) {
     });
 }
 
+function findByArticleAndOrdre(idArticle, ordreChap) {
+    return Chapitre.findOne({ where: { idArticle, ordreChap } });
+}
+
 function create(idArticle, donnees) {
     return Chapitre.create({ ...donnees, idArticle });
 }
@@ -29,4 +33,4 @@ function remove(id) {
     return Chapitre.destroy({ where: { idChapitre: id } });
 }
 
-module.exports = { findAllByArticle, findById, create, update, remove };
+module.exports = { findAllByArticle, findById, findByArticleAndOrdre, create, update, remove };

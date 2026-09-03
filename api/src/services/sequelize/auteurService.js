@@ -1,4 +1,5 @@
 const auteurRepository = require('../../repositories/sequelize/auteurRepository');
+const { sanitize, throwValidationError } = require('../../utils/validators');
 
 function getAllAuteurs() {
     return auteurRepository.findAll();
@@ -6,31 +7,28 @@ function getAllAuteurs() {
 
 async function getAuteurById(id) {
     const auteur = await auteurRepository.findById(id);
-    if (!auteur) {
-        const err = new Error('Auteur introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!auteur) throwValidationError('Auteur introuvable', 404);
     return auteur;
 }
 
-function validerDonnees(donnees) {
-    if (!donnees.pseudo || donnees.pseudo.trim() === '') {
-        const err = new Error('Le pseudo est obligatoire');
-        err.status = 400;
-        throw err;
-    }
+function sanitizeAndValidate(donnees) {
+    const pseudo = sanitize(donnees.pseudo);
+    const bio = sanitize(donnees.bio);
+
+    if (!pseudo) throwValidationError('Le pseudo est obligatoire');
+
+    return { pseudo, bio };
 }
 
 function createAuteur(donnees) {
-    validerDonnees(donnees);
-    return auteurRepository.create(donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return auteurRepository.create(clean);
 }
 
 async function updateAuteur(id, donnees) {
     await getAuteurById(id);
-    validerDonnees(donnees);
-    return auteurRepository.update(id, donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return auteurRepository.update(id, clean);
 }
 
 async function deleteAuteur(id) {

@@ -10,6 +10,7 @@ import api from "../../api/axiosConfig";
 import FormInput from "../../components/FormInput";
 import Btn from "../../components/Btn";
 import ChapitresSection from "../../components/admin/ChapitresSection";
+import MediaSection from "../../components/admin/MediaSection";
 
 export default function ArticleFormPage() {
     const { id: idFromUrl } = useParams();
@@ -125,8 +126,11 @@ export default function ArticleFormPage() {
                 {isEditMode ? "Modifier l'article" : "Ajouter un article"}
             </h1>
 
+            <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+                <MediaSection idArticle={idArticle} />
+            </div>
             <form onSubmit={handleSubmit} className="w-full max-w-md p-5 shadow-2xl gap-5 flex flex-col">
-
+                <h2 className="text-xl font-bold">Métadonnées</h2>
                 <FormInput
                     label="Titre"
                     id="titreArticle"
@@ -166,6 +170,9 @@ export default function ArticleFormPage() {
                     onChange={(e) => setDureeLectureArticle(e.target.value)}
                     placeholder="8"
                 />
+                <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+
+                </div>
 
                 <div className="flex flex-col gap-2">
                     <label htmlFor="statutArticle">Statut</label>

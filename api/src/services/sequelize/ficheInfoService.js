@@ -1,4 +1,5 @@
 const ficheInfoRepository = require('../../repositories/sequelize/ficheInfoRepository');
+const { sanitize, throwValidationError } = require('../../utils/validators');
 
 function getFicheInfosByArticle(idArticle) {
     return ficheInfoRepository.findAllByArticle(idArticle);
@@ -6,36 +7,29 @@ function getFicheInfosByArticle(idArticle) {
 
 async function getFicheInfoById(id) {
     const ficheInfo = await ficheInfoRepository.findById(id);
-    if (!ficheInfo) {
-        const err = new Error('Fiche info introuvable');
-        err.status = 404;
-        throw err;
-    }
+    if (!ficheInfo) throwValidationError('Fiche info introuvable', 404);
     return ficheInfo;
 }
 
-function validerDonnees(donnees) {
-    if (!donnees.cleFicheInfo || donnees.cleFicheInfo.trim() === '') {
-        const err = new Error('La clé est obligatoire');
-        err.status = 400;
-        throw err;
-    }
-    if (!donnees.valeurFicheInfo || donnees.valeurFicheInfo.trim() === '') {
-        const err = new Error('La valeur est obligatoire');
-        err.status = 400;
-        throw err;
-    }
+function sanitizeAndValidate(donnees) {
+    const cleFicheInfo = sanitize(donnees.cleFicheInfo);
+    const valeurFicheInfo = sanitize(donnees.valeurFicheInfo);
+
+    if (!cleFicheInfo) throwValidationError('La clé est obligatoire');
+    if (!valeurFicheInfo) throwValidationError('La valeur est obligatoire');
+
+    return { cleFicheInfo, valeurFicheInfo, ordreFicheInfo: donnees.ordreFicheInfo };
 }
 
 function createFicheInfo(idArticle, donnees) {
-    validerDonnees(donnees);
-    return ficheInfoRepository.create(idArticle, donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return ficheInfoRepository.create(idArticle, clean);
 }
 
 async function updateFicheInfo(id, donnees) {
     await getFicheInfoById(id);
-    validerDonnees(donnees);
-    return ficheInfoRepository.update(id, donnees);
+    const clean = sanitizeAndValidate(donnees);
+    return ficheInfoRepository.update(id, clean);
 }
 
 async function deleteFicheInfo(id) {
