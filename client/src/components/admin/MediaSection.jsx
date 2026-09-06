@@ -1,11 +1,14 @@
 // Section de gestion des médias : liste, ajout, suppression.
-// Réutilisable à 3 niveaux (article / chapitre / paragraphe) selon les props reçues —
-// un seul composant, pas de duplication entre les 3 contextes.
+// Réutilisable à 3 niveaux (article / chapitre / paragraphe) selon les props reçues.
 //
-// Type "image" → upload réel via Cloudinary (réutilise ImageUploadInput, comme CV/Projets).
-// Type "video"/"audio" → simple champ URL (YouTube/Vimeo/SoundCloud...), pas d'upload direct
-// pour l'instant — décision actée pour ne pas consommer le quota gratuit Cloudinary sur des
-// fichiers lourds.
+// Type "image" → sélection différée via ImageUploadInput (onFileSelected) : le fichier
+// est stocké en mémoire avec aperçu local, l'upload Cloudinary réel ne se déclenche
+// qu'au clic sur "Ajouter le média" — jamais avant, pour éviter tout fichier orphelin
+// si l'utilisateur change d'avis ou annule.
+// Type "video"/"audio" → simple champ URL (YouTube/Vimeo/SoundCloud...).
+//
+// Pas de <form> ici : imbriqué dans le <form> principal d'ArticleFormPage, HTML interdit
+// un <form> dans un <form>. Boutons en type="button" avec onClick.
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,8 +18,6 @@ import FormInput from "../FormInput";
 import ImageUploadInput from "../ImageUploadInput";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 
-// Détermine l'URL de base selon le niveau de rattachement (le plus précis d'abord),
-// même logique de priorité que mediaController.js côté back.
 function getBasePath({ idArticle, idChapitre, idParagraphe }) {
     if (idParagraphe) {
         return `/api/articles/${idArticle}/chapitres/${idChapitre}/paragraphes/${idParagraphe}/medias`;
@@ -27,13 +28,15 @@ function getBasePath({ idArticle, idChapitre, idParagraphe }) {
     return `/api/articles/${idArticle}/medias`;
 }
 
-export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
+export default function MediaSection({ idArticle, idChapitre, idParagraphe, allowedTypes = ["image", "video", "audio"] }) {
 
     const basePath = getBasePath({ idArticle, idChapitre, idParagraphe });
 
     const [medias, setMedias] = useState([]);
+    const [showForm, setShowForm] = useState(false);
     const [typeMedia, setTypeMedia] = useState("image");
-    const [urlMedia, setUrlMedia] = useState("");
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [urlMedia, setUrlMedia] = useState(""); // utilisé uniquement pour video/audio
     const [legendeMedia, setLegendeMedia] = useState("");
     const [ordreMedia, setOrdreMedia] = useState("1");
     const [timecodeSecondesMedia, setTimecodeSecondesMedia] = useState("");
@@ -42,7 +45,10 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
 
     const fetchMedias = () => {
         api.get(basePath)
-            .then((response) => setMedias(response.data))
+            .then((response) => {
+                const filtered = response.data.filter((m) => allowedTypes.includes(m.typeMedia));
+                setMedias(filtered);
+            })
             .catch(() => toast.error("Impossible de charger les médias."));
     };
 
@@ -51,32 +57,53 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
     }, [basePath]);
 
     const resetForm = () => {
+        setSelectedFile(null);
         setUrlMedia("");
         setLegendeMedia("");
         setOrdreMedia("1");
         setTimecodeSecondesMedia("");
     };
 
-    const handleAdd = async (e) => {
-        e.preventDefault();
-
-        if (!urlMedia) {
-            toast.error("Ajoute une image ou renseigne une URL avant de valider.");
+    const handleAdd = async () => {
+        if (typeMedia === "image" && !selectedFile) {
+            toast.error("Choisis une image avant de valider.");
+            return;
+        }
+        if (typeMedia !== "image" && !urlMedia) {
+            toast.error("Renseigne une URL avant de valider.");
             return;
         }
 
         setSubmitting(true);
 
         try {
+            let finalUrl = urlMedia;
+            let finalPublicId = null;
+
+            // Upload Cloudinary réel, seulement maintenant, seulement si type image
+            if (typeMedia === "image" && selectedFile) {
+                const formData = new FormData();
+                formData.append('image', selectedFile);
+
+                const uploadResponse = await api.post('/api/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                finalUrl = uploadResponse.data.url;
+                finalPublicId = uploadResponse.data.publicId;
+            }
+
             await api.post(basePath, {
                 typeMedia,
-                urlMedia,
+                urlMedia: finalUrl,
+                publicIdMedia: finalPublicId,
                 legendeMedia,
                 ordreMedia: Number(ordreMedia),
                 timecodeSecondesMedia: timecodeSecondesMedia ? Number(timecodeSecondesMedia) : null,
             });
+
             toast.success("Média ajouté.");
             resetForm();
+            setShowForm(false);
             fetchMedias();
         } catch (err) {
             toast.error(err.response?.data?.message || "Erreur lors de l'ajout.");
@@ -87,8 +114,6 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
 
     const handleDelete = async () => {
         try {
-            // Suppression via l'id direct — la route DELETE /api/.../medias/:id fonctionne
-            // quel que soit le niveau d'origine (l'id du média suffit, pas besoin du chemin complet).
             await api.delete(`${basePath}/${mediaToDelete.idMedia}`);
             setMediaToDelete(null);
             fetchMedias();
@@ -99,9 +124,8 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
 
     return (
         <div className="shadow-card p-4 flex flex-col gap-4">
-            <h3 className="font-bold">Ajouter un média</h3>
+            <h3 className="font-bold">Médias</h3>
 
-            {/* Liste des médias existants */}
             <div className="flex flex-col gap-2">
                 {medias.map((media) => (
                     <div key={media.idMedia} className="shadow-card p-3 flex flex-col gap-2">
@@ -113,13 +137,9 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
                         {media.typeMedia === "image" && (
                             <img src={media.urlMedia} alt={media.legendeMedia || ""} className="w-full max-h-40 object-cover" />
                         )}
-                        {media.typeMedia === "video" && (
+                        {(media.typeMedia === "video" || media.typeMedia === "audio") && (
                             <p className="text-xs opacity-70 truncate">{media.urlMedia}</p>
                         )}
-                        {media.typeMedia === "audio" && (
-                            <p className="text-xs opacity-70 truncate">{media.urlMedia}</p>
-                        )}
-
                         {media.timecodeSecondesMedia && (
                             <p className="text-xs opacity-70">Timecode : {media.timecodeSecondesMedia}s</p>
                         )}
@@ -127,75 +147,81 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe }) {
                 ))}
             </div>
 
-            {/* Formulaire d'ajout */}
-            <form onSubmit={handleAdd} className="flex flex-col gap-3">
-                <div className="flex flex-col gap-2">
-                    <label htmlFor={`typeMedia-${basePath}`}>Type</label>
-                    <select
-                        id={`typeMedia-${basePath}`}
-                        value={typeMedia}
-                        onChange={(e) => { setTypeMedia(e.target.value); setUrlMedia(""); }}
-                        className="shadow-card p-3"
-                    >
-                        <option value="image">Image</option>
-                        <option value="video">Vidéo (URL YouTube/Vimeo)</option>
-                        <option value="audio">Audio (URL SoundCloud...)</option>
-                    </select>
-                </div>
+            {!showForm ? (
+                <Btn contenu="+ Ajouter un média" onClick={() => setShowForm(true)} type="button" />
+            ) : (
+                <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor={`typeMedia-${basePath}`}>Type</label>
+                        <select
+                            id={`typeMedia-${basePath}`}
+                            value={typeMedia}
+                            onChange={(e) => { setTypeMedia(e.target.value); resetForm(); }}
+                            className="shadow-card p-3"
+                        >
+                            <option value="image">Image</option>
+                            <option value="video">Vidéo (URL YouTube/Vimeo)</option>
+                            <option value="audio">Audio (URL SoundCloud...)</option>
+                        </select>
+                    </div>
 
-                {typeMedia === "image" ? (
-                    <ImageUploadInput
-                        label="Image"
-                        currentImageUrl={urlMedia}
-                        onUploaded={(url) => setUrlMedia(url)}
-                    />
-                ) : (
+                    {typeMedia === "image" ? (
+                        <ImageUploadInput
+                            label="Image"
+                            currentImageUrl={null}
+                            onFileSelected={(file) => setSelectedFile(file)}
+                        />
+                    ) : (
+                        <FormInput
+                            label="URL"
+                            id={`urlMedia-${basePath}`}
+                            value={urlMedia}
+                            onChange={(e) => setUrlMedia(e.target.value)}
+                            placeholder="https://..."
+                        />
+                    )}
+
                     <FormInput
-                        label="URL"
-                        id={`urlMedia-${basePath}`}
-                        value={urlMedia}
-                        onChange={(e) => setUrlMedia(e.target.value)}
-                        placeholder="https://..."
-                    />
-                )}
-
-                <FormInput
-                    label="Légende"
-                    id={`legendeMedia-${basePath}`}
-                    value={legendeMedia}
-                    onChange={(e) => setLegendeMedia(e.target.value)}
-                    required={false}
-                />
-
-                <FormInput
-                    label="Ordre"
-                    id={`ordreMedia-${basePath}`}
-                    type="number"
-                    min="1"
-                    value={ordreMedia}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || (Number(value) >= 1 && Number.isInteger(Number(value)))) {
-                            setOrdreMedia(value);
-                        }
-                    }}
-                    placeholder="1"
-                />
-
-                {(typeMedia === "video" || typeMedia === "audio") && (
-                    <FormInput
-                        label="Timecode de déclenchement (secondes, optionnel)"
-                        id={`timecode-${basePath}`}
-                        type="number"
-                        value={timecodeSecondesMedia}
-                        onChange={(e) => setTimecodeSecondesMedia(e.target.value)}
-                        placeholder="45"
+                        label="Légende"
+                        id={`legendeMedia-${basePath}`}
+                        value={legendeMedia}
+                        onChange={(e) => setLegendeMedia(e.target.value)}
                         required={false}
                     />
-                )}
 
-                <Btn contenu={submitting ? "Ajout..." : "Ajouter le média"} type="submit" />
-            </form>
+                    <FormInput
+                        label="Ordre"
+                        id={`ordreMedia-${basePath}`}
+                        type="number"
+                        min="1"
+                        value={ordreMedia}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === "" || (Number(value) >= 1 && Number.isInteger(Number(value)))) {
+                                setOrdreMedia(value);
+                            }
+                        }}
+                        placeholder="1"
+                    />
+
+                    {(typeMedia === "video" || typeMedia === "audio") && (
+                        <FormInput
+                            label="Timecode de déclenchement (secondes, optionnel)"
+                            id={`timecode-${basePath}`}
+                            type="number"
+                            value={timecodeSecondesMedia}
+                            onChange={(e) => setTimecodeSecondesMedia(e.target.value)}
+                            placeholder="45"
+                            required={false}
+                        />
+                    )}
+
+                    <div className="flex gap-3">
+                        <Btn contenu={submitting ? "Ajout..." : "Ajouter le média"} type="button" onClick={handleAdd} />
+                        <Btn contenu="Annuler" onClick={() => setShowForm(false)} type="button" />
+                    </div>
+                </div>
+            )}
 
             <ConfirmDeleteModal
                 isOpen={mediaToDelete !== null}

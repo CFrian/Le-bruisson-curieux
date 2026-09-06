@@ -16,7 +16,12 @@ function findById(id) {
             {
                 model: Chapitre,
                 include: [
-                    { model: Paragraphe, separate: true, order: [['ordreParagraphe', 'ASC']] },
+                    {
+                        model: Paragraphe,
+                        separate: true,
+                        order: [['ordreParagraphe', 'ASC']],
+                        include: [{ model: Media, as: 'mediasParagraphe' }],
+                    },
                     { model: Media, as: 'mediasChapitre' },
                 ],
                 separate: true,
@@ -38,7 +43,12 @@ function findBySlug(slug) {
             {
                 model: Chapitre,
                 include: [
-                    { model: Paragraphe, separate: true, order: [['ordreParagraphe', 'ASC']] },
+                    {
+                        model: Paragraphe,
+                        separate: true,
+                        order: [['ordreParagraphe', 'ASC']],
+                        include: [{ model: Media, as: 'mediasParagraphe' }],
+                    },
                     { model: Media, as: 'mediasChapitre' },
                 ],
                 separate: true,

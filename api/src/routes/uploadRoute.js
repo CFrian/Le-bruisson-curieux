@@ -29,7 +29,7 @@ router.post('/', requireAuth, upload.single('image'), (req, res, next) => {
         { folder: 'portfolio' },
         (error, result) => {
             if (error) return next(error);
-            res.json({ url: result.secure_url });
+            res.json({ url: result.secure_url, publicId: result.public_id });
         }
     );
 

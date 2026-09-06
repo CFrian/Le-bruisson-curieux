@@ -51,10 +51,9 @@ export default function AdminCvPage() {
     const [telephone, setTelephone] = useState("");
     const [zones, setZones] = useState("");
     const [photo, setPhoto] = useState("");
+    const [selectedPhotoFile, setSelectedPhotoFile] = useState(null);
 
     //tableau langues
-
-
     const langues = useEditableArray([], { langue: "", niveau: "" });
 
     // Hook pour le tableau réseaux
@@ -159,74 +158,89 @@ export default function AdminCvPage() {
             .map((z) => z.trim())
             .filter((z) => z.length > 0);
 
-        // Reconstruction complète de "identite" : on garde "photo" tel quel (pas édité ici),
-        // on écrase seulement les champs modifiés dans ce formulaire.
-        const identiteData = {
-            ...cv.identite,
-            nom,
-            titre,
-            statut,
-            recherche,
-            photo
-        };
-
-        // Reconstruction complète de "contact" : on garde "reseaux" et le reste de
-        // "localisation" (ville, codePostal) tels quels, on écrase email/telephone/zones.
-        const contactData = {
-            ...cv.contact,
-            email,
-            telephone,
-            localisation: {
-                ...cv.contact.localisation,
-                zones: zonesArray
-            },
-            reseaux: reseaux.items
-        };
-
-        const competencesTransversesData = competencesTransverses.items.map((c) => ({
-            categorie: c.categorie,
-            details: c.details.split(",").map((d) => d.trim()).filter((d) => d.length > 0)
-        }));
-
-        const blocsTechniquesData = blocsTechniques.items.map((b) => ({
-            contexte: b.contexte,
-            technologies: b.technologies.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
-        }));
-
-        const interetsData = interets.items.map((i) => ({
-            categorie: i.categorie,
-            items: i.items.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
-        }));
-
-        const formationsData = formations.items.map((f) => ({
-            intitule: f.intitule,
-            etablissement: f.etablissement,
-            niveau: f.niveau,
-            modalite: f.modalite,
-            specialisation: f.specialisation,
-            dateDebut: f.dateDebut,
-            dateFin: f.enCours ? null : f.dateFin,
-            description: f.description
-        }));
-
-        const experiencesData = experiences.items.map((exp) => ({
-            poste: exp.poste,
-            contexte: exp.contexte,
-            type: exp.type,
-            dateDebut: exp.dateDebut,
-            dateFin: exp.enCours ? null : exp.dateFin,
-            missions: exp.missions.split("\n").map((m) => m.trim()).filter((m) => m.length > 0)
-        }));
-
-        const disponibilitesData = disponibilites.items.map((d) => ({
-            type: d.type,
-            dateDebut: d.dateDebut,
-            dateFin: d.dateFin || null,
-            note: d.note,
-            formationCiblee: d.formationCiblee
-        }));
-
         try {
+            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du CV —
+            // jamais avant, pour éviter tout fichier orphelin si l'utilisateur change d'avis.
+            let finalPhotoUrl = photo;
+
+            if (selectedPhotoFile) {
+                const formData = new FormData();
+                formData.append('image', selectedPhotoFile);
+
+                const uploadResponse = await api.post('/api/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                finalPhotoUrl = uploadResponse.data.url;
+            }
+
+            // Reconstruction complète de "identite" : on garde "photo" tel quel (pas édité ici),
+            // on écrase seulement les champs modifiés dans ce formulaire.
+            const identiteData = {
+                ...cv.identite,
+                nom,
+                titre,
+                statut,
+                recherche,
+                photo: finalPhotoUrl
+            };
+
+            // Reconstruction complète de "contact" : on garde "reseaux" et le reste de
+            // "localisation" (ville, codePostal) tels quels, on écrase email/telephone/zones.
+            const contactData = {
+                ...cv.contact,
+                email,
+                telephone,
+                localisation: {
+                    ...cv.contact.localisation,
+                    zones: zonesArray
+                },
+                reseaux: reseaux.items
+            };
+
+            const competencesTransversesData = competencesTransverses.items.map((c) => ({
+                categorie: c.categorie,
+                details: c.details.split(",").map((d) => d.trim()).filter((d) => d.length > 0)
+            }));
+
+            const blocsTechniquesData = blocsTechniques.items.map((b) => ({
+                contexte: b.contexte,
+                technologies: b.technologies.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
+            }));
+
+            const interetsData = interets.items.map((i) => ({
+                categorie: i.categorie,
+                items: i.items.split(",").map((x) => x.trim()).filter((x) => x.length > 0)
+            }));
+
+            const formationsData = formations.items.map((f) => ({
+                intitule: f.intitule,
+                etablissement: f.etablissement,
+                niveau: f.niveau,
+                modalite: f.modalite,
+                specialisation: f.specialisation,
+                dateDebut: f.dateDebut,
+                dateFin: f.enCours ? null : f.dateFin,
+                description: f.description
+            }));
+
+            const experiencesData = experiences.items.map((exp) => ({
+                poste: exp.poste,
+                contexte: exp.contexte,
+                type: exp.type,
+                dateDebut: exp.dateDebut,
+                dateFin: exp.enCours ? null : exp.dateFin,
+                missions: exp.missions.split("\n").map((m) => m.trim()).filter((m) => m.length > 0)
+            }));
+
+            const disponibilitesData = disponibilites.items.map((d) => ({
+                type: d.type,
+                dateDebut: d.dateDebut,
+                dateFin: d.dateFin || null,
+                note: d.note,
+                formationCiblee: d.formationCiblee
+            }));
+
+
             const response = await api.patch('/api/cv', {
                 identite: identiteData,
                 profil,
@@ -239,6 +253,7 @@ export default function AdminCvPage() {
                 experiences: experiencesData,
                 disponibilites: disponibilitesData
             });
+
 
 
             setCv(response.data);
@@ -269,7 +284,7 @@ export default function AdminCvPage() {
                 <ImageUploadInput
                     label="Photo de profil"
                     currentImageUrl={photo}
-                    onUploaded={(url) => setPhoto(url)}
+                    onFileSelected={(file) => setSelectedPhotoFile(file)}
                 />
                 <FormInput label="Nom" id="nom" value={nom}
                     onChange={(e) => setNom(e.target.value)} placeholder="Nom complet" />

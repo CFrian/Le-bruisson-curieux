@@ -1,4 +1,3 @@
-// ProjectFormPage.jsx
 // Formulaire d'ajout OU de modification d'un projet, selon la présence d'un id dans l'URL.
 // Route :id absent → création. Route :id présent → édition (pré-remplissage + PATCH).
 
@@ -25,6 +24,7 @@ export default function ProjectFormPage() {
     const [lienRepo, setLienRepo] = useState("");
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState("");
+    const [selectedImageFile, setSelectedImageFile] = useState(null);
 
     // En mode édition, on charge les données existantes du projet pour pré-remplir le formulaire
     useEffect(() => {
@@ -49,23 +49,35 @@ export default function ProjectFormPage() {
         e.preventDefault();
         setLoading(true);
 
-        // Reconvertit le texte "React, Node, dev" en tableau ["React", "Node", "dev"]
-        // .trim() enlève les espaces autour de chaque mot, .filter() retire les entrées vides
         const stackArray = stack
             .split(",")
             .map((tag) => tag.trim())
             .filter((tag) => tag.length > 0);
 
-        const projectData = {
-            titre,
-            description,
-            stack: stackArray,
-            lienDemo,
-            lienRepo,
-            image
-        };
-
         try {
+            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du projet —
+            // jamais avant, pour éviter tout fichier orphelin si l'utilisateur change d'avis.
+            let finalImageUrl = image;
+
+            if (selectedImageFile) {
+                const formData = new FormData();
+                formData.append('image', selectedImageFile);
+
+                const uploadResponse = await api.post('/api/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                finalImageUrl = uploadResponse.data.url;
+            }
+
+            const projectData = {
+                titre,
+                description,
+                stack: stackArray,
+                lienDemo,
+                lienRepo,
+                image: finalImageUrl
+            };
+
             if (isEditMode) {
                 await api.patch(`/api/projects/${id}`, projectData);
                 toast.success("Projet modifié avec succès.");
@@ -96,11 +108,11 @@ export default function ProjectFormPage() {
                 {isEditMode ? "Modifier le projet" : "Ajouter un projet"}
             </h1>
             <form onSubmit={handleSubmit} className="w-full max-w-md p-5 shadow-2xl gap-5 flex flex-col">
-            <ImageUploadInput
-                label="Image du projet"
-                currentImageUrl={image}
-                onUploaded={(url) => setImage(url)}
-            />
+                <ImageUploadInput
+                    label="Image du projet"
+                    currentImageUrl={image}
+                    onFileSelected={(file) => setSelectedImageFile(file)}
+                />
                 <FormInput
                     label="Titre"
                     id="titre"

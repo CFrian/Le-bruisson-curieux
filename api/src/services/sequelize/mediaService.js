@@ -1,4 +1,5 @@
 const mediaRepository = require('../../repositories/sequelize/mediaRepository');
+const cloudinary = require('../../config/cloudinary');
 const { isValidUrl, sanitize, throwValidationError } = require('../../utils/validators');
 
 function getMediasByArticle(idArticle) {
@@ -41,6 +42,7 @@ function sanitizeAndValidate(donnees) {
         typeMedia: donnees.typeMedia,
         urlMedia,
         legendeMedia,
+        publicIdMedia: donnees.publicIdMedia || null,
         ordreMedia: donnees.ordreMedia,
         timecodeSecondesMedia: donnees.timecodeSecondesMedia ?? null,
     };
@@ -63,7 +65,18 @@ async function updateMedia(id, donnees) {
 }
 
 async function deleteMedia(id) {
-    await getMediaById(id);
+    const media = await getMediaById(id);
+
+    if (media.publicIdMedia) {
+        try {
+            await cloudinary.uploader.destroy(media.publicIdMedia);
+        } catch (err) {
+            console.error('Erreur suppression Cloudinary :', err.message);
+            // On continue quand même la suppression en base — ne pas bloquer
+            // l'utilisateur si Cloudinary est temporairement indisponible.
+        }
+    }
+
     return mediaRepository.remove(id);
 }
 
