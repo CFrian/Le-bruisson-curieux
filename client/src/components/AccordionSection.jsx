@@ -19,8 +19,8 @@ export default function AccordionSection({ title, children, defaultOpen = false 
                 className="w-full flex items-center justify-between p-4 text-left cursor-pointer hover:opacity-70 transition-opacity duration-200"
             >
                 <h3 className="text-xl font-bold">{title}</h3>
-                <span className={`text-2xl transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-                    ▼
+                <span className={`text-2xl transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}>
+                    ▶
                 </span>
             </button>
 

@@ -37,8 +37,8 @@ export default function PrestationsAccordion({ prestations }) {
                                         className="w-full flex items-center justify-between py-3 text-left hover:opacity-70 transition-opacity duration-200"
                                     >
                                         <span className="text-lg font-semibold">{item.title}</span>
-                                        <span className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-                                            ▼
+                                        <span className={`transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}>
+                                            ▶
                                         </span>
                                     </button>
 
