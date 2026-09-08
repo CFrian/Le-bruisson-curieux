@@ -13,6 +13,7 @@ async function getParagrapheById(id) {
 
 function sanitizeAndValidate(donnees) {
     const contenuParagraphe = sanitize(donnees.contenuParagraphe);
+    const titreParagraphe = sanitize(donnees.titreParagraphe);
 
     if (!contenuParagraphe) throwValidationError('Le contenu du paragraphe est obligatoire');
     if (donnees.ordreParagraphe === undefined || donnees.ordreParagraphe === null) {
@@ -22,7 +23,7 @@ function sanitizeAndValidate(donnees) {
         throwValidationError('L\'ordre du paragraphe doit être un nombre entier supérieur ou égal à 1');
     }
 
-    return { contenuParagraphe, ordreParagraphe: donnees.ordreParagraphe };
+    return { contenuParagraphe, titreParagraphe, ordreParagraphe: donnees.ordreParagraphe };
 }
 
 async function createParagraphe(idChapitre, donnees) {

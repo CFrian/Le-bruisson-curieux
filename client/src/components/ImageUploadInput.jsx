@@ -1,68 +1,51 @@
-// Champ d'upload d'image réutilisable.
-// Au choix d'un fichier, l'upload se déclenche automatiquement vers /api/upload.
-// Une fois terminé, l'URL Cloudinary reçue est transmise au parent via onUploaded,
-// pour qu'il l'utilise dans son propre state (ex: le champ "image" d'un projet).
+// Champ de sélection d'image réutilisable.
+// Ne fait AUCUN upload au choix du fichier — stocke seulement le fichier en mémoire
+// avec un aperçu local, et notifie le parent via onFileSelected.
+// C'est au parent de déclencher l'upload réel (POST /api/upload) au moment de sa
+// propre soumission de formulaire — jamais avant, pour éviter tout fichier orphelin
+// sur Cloudinary si l'utilisateur change d'avis ou annule.
 
-import { useState } from "react";
-import { toast } from "react-toastify";
-import api from "../api/axiosConfig";
+import { useState, useEffect } from "react";
 
-export default function ImageUploadInput({ label, currentImageUrl, onUploaded }) {
-    const [uploading, setUploading] = useState(false);
+export default function ImageUploadInput({ label, currentImageUrl, onFileSelected }) {
+    const [previewUrl, setPreviewUrl] = useState(currentImageUrl || null);
 
-    const handleFileChange = async (e) => {
+    // Si le parent change currentImageUrl de l'extérieur (ex: chargement d'un projet
+    // existant en mode édition), on met à jour l'aperçu en conséquence.
+    useEffect(() => {
+        setPreviewUrl(currentImageUrl || null);
+    }, [currentImageUrl]);
+
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // FormData : format spécial requis pour envoyer un fichier binaire
-        // dans une requête HTTP (contrairement au JSON classique).
-        const formData = new FormData();
-        formData.append('image', file); // "image" doit correspondre à upload.single('image') côté back
-
-        setUploading(true);
-
-        try {
-            const response = await api.post('/api/upload', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            onUploaded(response.data.url);
-            toast.success("Image envoyée avec succès.");
-        } catch (err) {
-            toast.error(err.response?.data?.message || "Erreur lors de l'envoi de l'image.");
-        } finally {
-            setUploading(false);
-        }
+        const localPreview = URL.createObjectURL(file);
+        setPreviewUrl(localPreview);
+        onFileSelected(file); // transmet le fichier brut au parent, pas encore uploadé
     };
 
     return (
         <div className="flex flex-col gap-2">
             <span>{label}</span>
 
-            {currentImageUrl && (
-                <img src={currentImageUrl} alt="Aperçu" className="w-32 h-32 object-cover" />
+            {previewUrl && (
+                <img src={previewUrl} alt="Aperçu" className="w-32 h-32 object-cover" />
             )}
 
-            {/* Input natif caché — jamais affiché directement à l'utilisateur */}
             <input
-                id="image-upload"
+                id={`image-upload-${label}`}
                 type="file"
                 accept="image/jpeg, image/png, image/webp, image/svg+xml"
                 onChange={handleFileChange}
-                disabled={uploading}
                 className="hidden"
             />
 
-            {/* Label stylisé comme un bouton, déclenche l'input caché au clic
-                grâce au htmlFor correspondant à l'id de l'input */}
             <label
-                htmlFor="image-upload"
-                className={`shadow-cta hover:shadow-card transition-shadow duration-200 p-3 w-fit cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+                htmlFor={`image-upload-${label}`}
+                className="shadow-cta hover:shadow-card transition-shadow duration-200 p-3 w-fit cursor-pointer"
             >
-                {uploading
-                    ? 'Envoi en cours...'
-                    : currentImageUrl
-                        ? "Changer l'image"
-                        : "Choisir une image"}
+                {previewUrl ? "Changer l'image" : "Choisir une image"}
             </label>
         </div>
     );

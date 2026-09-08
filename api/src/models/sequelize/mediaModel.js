@@ -11,6 +11,10 @@ const Media = sequelize.define('Media', {
         type: DataTypes.STRING(30),
         allowNull: false,
     },
+    publicIdMedia: {
+        type: DataTypes.STRING(150),
+        allowNull: true,
+    },
     urlMedia: {
         type: DataTypes.STRING(150),
         allowNull: false,

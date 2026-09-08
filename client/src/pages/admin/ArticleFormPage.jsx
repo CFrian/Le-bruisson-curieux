@@ -12,6 +12,11 @@ import Btn from "../../components/Btn";
 import ChapitresSection from "../../components/admin/ChapitresSection";
 import MediaSection from "../../components/admin/MediaSection";
 
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 export default function ArticleFormPage() {
     const { id: idFromUrl } = useParams();
 
@@ -126,11 +131,13 @@ export default function ArticleFormPage() {
                 {isEditMode ? "Modifier l'article" : "Ajouter un article"}
             </h1>
 
-            <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
-                <MediaSection idArticle={idArticle} />
-            </div>
             <form onSubmit={handleSubmit} className="w-full max-w-md p-5 shadow-2xl gap-5 flex flex-col">
                 <h2 className="text-xl font-bold">Métadonnées</h2>
+
+                <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+                    <MediaSection idArticle={idArticle} />
+                </div>
+
                 <FormInput
                     label="Titre"
                     id="titreArticle"
@@ -255,6 +262,10 @@ export default function ArticleFormPage() {
                 />
             </form>
 
+            <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+                <MediaSection idArticle={idArticle} />
+            </div>
+
             {/* Section Chapitres — grisée et non cliquable tant que l'article n'existe pas */}
             <div
                 className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"
@@ -265,9 +276,20 @@ export default function ArticleFormPage() {
                         Enregistre d'abord l'article pour débloquer cette section.
                     </p>
                 )}
+
                 <ChapitresSection idArticle={idArticle} />
             </div>
-
+<div className="w-full max-w-md flex justify-end sticky bottom-8">
+    <button
+        type="button"
+        onClick={scrollToTop}
+        aria-label="Remonter en haut de la page"
+        className="translate-x-full shadow-cta hover:shadow-card transition-shadow duration-200 p-4 cursor-pointer bg-black text-white"
+    >
+        ↑
+    </button>
+</div>
         </div>
+        
     );
 }

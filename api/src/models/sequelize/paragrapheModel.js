@@ -7,6 +7,10 @@ const Paragraphe = sequelize.define('Paragraphe', {
         primaryKey: true,
         autoIncrement: true,
     },
+    titreParagraphe: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+    },
     contenuParagraphe: {
         type: DataTypes.TEXT,
         allowNull: true,
