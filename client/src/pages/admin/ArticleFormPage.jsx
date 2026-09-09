@@ -135,7 +135,7 @@ export default function ArticleFormPage() {
                 <h2 className="text-xl font-bold">Métadonnées</h2>
 
                 <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
-                    <MediaSection idArticle={idArticle} />
+                    <MediaSection idArticle={idArticle} allowedTypes={["image"]} />
                 </div>
 
                 <FormInput
@@ -263,7 +263,7 @@ export default function ArticleFormPage() {
             </form>
 
             <div className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
-                <MediaSection idArticle={idArticle} />
+                <MediaSection idArticle={idArticle} allowedTypes={["video", "audio"]} />
             </div>
 
             {/* Section Chapitres — grisée et non cliquable tant que l'article n'existe pas */}
@@ -279,17 +279,17 @@ export default function ArticleFormPage() {
 
                 <ChapitresSection idArticle={idArticle} />
             </div>
-<div className="w-full max-w-md flex justify-end sticky bottom-8">
-    <button
-        type="button"
-        onClick={scrollToTop}
-        aria-label="Remonter en haut de la page"
-        className="translate-x-full shadow-cta hover:shadow-card transition-shadow duration-200 p-4 cursor-pointer bg-black text-white"
-    >
-        ↑
-    </button>
-</div>
+            <div className="w-full max-w-md flex justify-end sticky bottom-8">
+                <button
+                    type="button"
+                    onClick={scrollToTop}
+                    aria-label="Remonter en haut de la page"
+                    className="translate-x-full shadow-cta hover:shadow-card transition-shadow duration-200 p-4 cursor-pointer bg-black text-white"
+                >
+                    ↑
+                </button>
+            </div>
         </div>
-        
+
     );
 }

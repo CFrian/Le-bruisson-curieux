@@ -139,6 +139,7 @@ export default function ArticlesPage() {
                         auteur={article.Auteur?.pseudo}
                         dureeLecture={article.dureeLectureArticle}
                         tags={article.Tags?.map((tag) => tag.nomTag).join(" - ")}
+                        date={new Date(article.dateCreationArticle).toLocaleDateString('fr-FR')}
                         path={`/articles/${article.slugArticle}`}
                     />
                 ))}

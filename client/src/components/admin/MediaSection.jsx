@@ -53,8 +53,9 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe, allo
     };
 
     useEffect(() => {
+        if (!idArticle) return; // ne rien charger tant que l'article n'existe pas
         fetchMedias();
-    }, [basePath]);
+    }, [basePath, idArticle]);
 
     const resetForm = () => {
         setSelectedFile(null);
