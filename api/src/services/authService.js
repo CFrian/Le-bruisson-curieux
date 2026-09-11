@@ -158,10 +158,10 @@ const forgotPassword = async (email) => {
     // (énumération de comptes). On répond "succès" dans tous les cas côté controller.
     if (!user) return;
 
-    // Token aléatoire, imprévisible (crypto, pas Math.random qui n'est pas sécurisé)
+    // Token aléatoire
     const rawToken = crypto.randomBytes(32).toString('hex');
 
-    // Hash stocké en base — même principe qu'un mot de passe, jamais en clair
+    // Hash stocké en base 
     const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
 
     await authRepository.updateUser(user._id, {

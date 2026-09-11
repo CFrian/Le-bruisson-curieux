@@ -1,5 +1,5 @@
 
-// Contient les règles qui ne sont ni de l'accès aux données (repository), ni de la gestion HTTP (controller) 
+
 // "projet introuvable" -> erreur 404 exploitable par le controller.
 
 const projectRepository = require('../repositories/projectRepository')

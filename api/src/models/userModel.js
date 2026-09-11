@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     mustChangePassword: { type: Boolean, default: true },
     tempPasswordExpireAt: { type: Date, default: null },
-    resetPasswordToken: { type: String, default: null },      // hash du token de reset, jamais en clair
-    resetPasswordExpiresAt: { type: Date, default: null }      // expiration du token (15 min après génération)
+    resetPasswordToken: { type: String, default: null },
+    resetPasswordExpiresAt: { type: Date, default: null }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema, 'users')

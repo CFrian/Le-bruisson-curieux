@@ -24,7 +24,6 @@ export default function Btn({ contenu, onClick, path, type = "button", variant =
             </Link>
         )
     }
-
     return (
         <button type={type} onClick={onClick} className={className}>
             {contenu}

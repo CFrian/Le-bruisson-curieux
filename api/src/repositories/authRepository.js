@@ -1,4 +1,4 @@
-//ce fichier cherche un utilisateur par email ou par id, et permet de mettre à jour ses données (nous on cherche mustChangePassword) en ciblant le document via son id.
+
 const User = require('../models/userModel')
 
 const findByEmail = (email) => User.findOne({ email })

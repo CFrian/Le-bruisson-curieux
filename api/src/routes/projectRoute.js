@@ -1,9 +1,3 @@
-//mapping route
-
-// Endpoints REST pour les projets.
-// Fait le lien entre une URL/méthode HTTP et le controller correspondant.
-
-
 const express = require('express')
 const router = express.Router()
 const projectController = require('../controllers/projectController')

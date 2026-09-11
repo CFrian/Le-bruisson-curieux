@@ -1,13 +1,9 @@
 
 // Route générique d'upload de fichiers vers Cloudinary.
-// Réutilisable pour toute image du site (projets, CV...) — le front envoie le fichier,
-// cette route renvoie l'URL Cloudinary à stocker ensuite dans le document concerné
-// (Project, CV...) via les routes PATCH/POST existantes.
 
 // N'utilise PAS multer-storage-cloudinary (package abandonné, incompatible avec
 // cloudinary v2 — voir points de compréhension). À la place : multer garde le fichier
 // en mémoire (buffer), puis on l'envoie nous-mêmes à Cloudinary via upload_stream().
-
 
 const express = require('express');
 const router = express.Router();
@@ -38,8 +34,7 @@ router.post('/', requireAuth, upload.single('image'), (req, res, next) => {
 
 }, (err, req, res, next) => {
     // Gestionnaire d'erreur spécifique à multer (taille, format refusé).
-    // Signature à 4 paramètres obligatoire pour qu'Express le reconnaisse
-    // comme un middleware d'erreur.
+    // Signature à 4 paramètres obligatoire pour qu'Express le reconnaisse comme un middleware d'erreur.
     if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ message: 'Le fichier dépasse la taille maximale autorisée (5 Mo).' });
     }

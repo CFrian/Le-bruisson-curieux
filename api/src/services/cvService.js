@@ -10,7 +10,7 @@ const getCV = async () => {
     return cv
 }
 
-// Met à jour le CV existant. Comme il n'y a qu'un seul document CV (singleton),
+// Met à jour le CV existant. Commme il n'y a qu'un seul document CV (singleton),
 // on le retrouve d'abord via findCV() pour récupérer son _id,
 // plutôt que d'exiger que le front connaisse cet id à l'avance.
 

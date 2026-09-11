@@ -1,6 +1,3 @@
-// Stocke les refresh tokens actifs en base.
-// À la déconnexion, le token est supprimé → il ne peut plus générer de nouvel access token.
-// Protège contre le vol de session : un token révoqué devient immédiatement inutilisable.
 
 const mongoose = require('mongoose');
 

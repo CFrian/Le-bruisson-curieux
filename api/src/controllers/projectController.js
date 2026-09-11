@@ -1,10 +1,6 @@
-// Reçoit la requête HTTP (req), appelle le service correspondant, et traduit le résultat (ou l'erreur) en réponse HTTP (res).
-// ne parle jamais directement à Mongoose.
-
 const projetService = require('../services/projectService');
 
 //GET => projects - liste publique des projets donc non archivés
-
 const getAllProjects = async (req, res, next) => {
     try {
         const projects = await projetService.getAllPublic()

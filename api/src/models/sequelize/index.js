@@ -21,9 +21,7 @@ Categorie.hasMany(Article, { foreignKey: 'idCategorie' });
 Article.belongsToMany(Tag, {
     through: 'concerne',
     // indique à Sequelize d'utiliser la table concerne existante comme table pivot 
-    // il n'a pas besoin qu'elle soit "modélisée" formellement, 
-    // juste de connaître son nom et les deux colonnes de jointure 
-    // (idArticle/idTag, mappées automatiquement vers id_article/id_tag grâce à underscored).
+
     foreignKey: 'idArticle',
     otherKey: 'idTag',
     timestamps: false,

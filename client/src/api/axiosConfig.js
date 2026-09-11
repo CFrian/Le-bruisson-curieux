@@ -23,8 +23,6 @@ const api = axios.create({
 let isRefreshing = false;
 let failedQueue = [];
 
-// Vide la file d'attente : soit en erreur (si le refresh a échoué),
-// soit en relançant chaque requête en attente (si le refresh a réussi).
 const processQueue = (error) => {
     failedQueue.forEach((promise) => {
         if (error) {

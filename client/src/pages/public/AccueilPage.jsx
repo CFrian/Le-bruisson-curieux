@@ -27,10 +27,8 @@ export default function AccueilPage() {
 
     return (
         <div>
-
-            {/* Hero — isolé, inchangé */}
             <div
-                className="bg-black text-white flex flex-col justify-center items-center min-h-[500px] px-6"
+                className="bg-black text-white flex flex-col justify-center items-center min-height: 500px px-6"
                 style={{
                     backgroundImage: `url(${heroImage})`,
                     backgroundSize: 'cover',
@@ -49,7 +47,6 @@ export default function AccueilPage() {
                 </div>
             </div>
 
-            {/* Reste du contenu — flex-col centré, un seul gap global */}
             <div className="flex flex-col items-center justify-center gap-10 p-6 mt-7">
                 <PanelBorderLR>
                     <p>

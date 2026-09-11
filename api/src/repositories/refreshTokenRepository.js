@@ -1,7 +1,3 @@
-// Accès aux données pour la blacklist des refresh tokens.
-// Permet de sauvegarder un token à la création de session,
-// de le trouver pour le valider, et de le supprimer à la déconnexion.
-
 const RefreshToken = require('../models/refreshTokenModel');
 
 // Sauvegarde un nouveau refresh token en base

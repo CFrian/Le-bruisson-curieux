@@ -18,13 +18,8 @@ export default function Card({ image, title, comment, stacks, lienDemo, lienRepo
                 {stacks && <p className="italic mt-7">{stacks}</p>}
             </div>
 
-            {/* Navigation interne (SPA) — Btn/Link, jamais <a> classique.
-                Réservé aux routes internes (ex: page détail d'un article). */}
             {path && <Btn contenu={linkLabel} path={path} />}
 
-            {/* Liens externes — <a> classique, pas Btn/Link (réservé à la navigation interne).
-                target="_blank" + rel="noopener noreferrer" : protection reverse tabnabbing,
-                obligatoire sur tout lien externe ouvert dans un nouvel onglet. */}
             <div className="flex gap-3">
                 {lienDemo && (
 

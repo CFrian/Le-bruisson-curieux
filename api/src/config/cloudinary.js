@@ -1,6 +1,3 @@
-// Configuration de la connexion au service Cloudinary (stockage externe des images/sons).
-// Ce fichier centralise l'initialisation — tous les uploads du projet passeront par cette instance.
-
 const { v2: cloudinary } = require('cloudinary');
 //{ v2: cloudinary } — le SDK Cloudinary expose une ancienne API (v1) et une nouvelle (v2), 
 // j'importe explicitement la version 2, recommandée actuellement.

@@ -1,7 +1,5 @@
-// Middleware de protection des routes sensibles.
+
 // Vérifie que l'access token JWT est présent et valide dans les cookies.
-// Si OK → ajoute req.user avec l'id de l'admin et passe à la suite.
-// Si !OK → bloque la requête avec une erreur 401.
 
 const jwt = require('jsonwebtoken')
 
