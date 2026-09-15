@@ -6,7 +6,7 @@ export default function ProfileCard({ name, image }) {
                 alt={name || "Photo de profil"}
                 className="w-80 h-80 object-top object-cover"
             />
-            {name && <h1 className="text-4xl">{name}</h1>}
+            {name && <h1 className="text-2xl sm:text-4xl text-center">{name}</h1>}
         </div>
     )
 }

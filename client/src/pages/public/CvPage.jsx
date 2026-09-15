@@ -21,7 +21,7 @@ export default function CvPage() {
     useEffect(() => {
         api.get('/api/cv')
             .then((response) => {
-                // Le CV est un document unique — si l'API renvoie un tableau, on prend le premier élément
+                // Le CV est un document unique   si l'API renvoie un tableau, on prend le premier élément
                 const data = Array.isArray(response.data) ? response.data[0] : response.data;
                 setCv(data);
             })
@@ -112,7 +112,7 @@ export default function CvPage() {
                         <div key={exp._id} className="shadow-card p-4">
                             <h3 className="text-xl font-bold">{exp.poste}</h3>
                             <p className="italic">
-                                {formatDate(exp.dateDebut)} — {formatDate(exp.dateFin)} · {exp.type}
+                                {formatDate(exp.dateDebut)}   {formatDate(exp.dateFin)} · {exp.type}
                             </p>
                             {exp.contexte && <p className="mt-1">{exp.contexte}</p>}
                             <ul className="list-disc list-inside mt-2">
@@ -133,7 +133,7 @@ export default function CvPage() {
                         <div key={formation._id} className="shadow-card p-4">
                             <h3 className="text-xl font-bold">{formation.intitule}</h3>
                             <p className="italic">
-                                {formation.etablissement} · {formatDate(formation.dateDebut)} — {formatDate(formation.dateFin)}
+                                {formation.etablissement} · {formatDate(formation.dateDebut)}   {formatDate(formation.dateFin)}
                             </p>
                             {formation.description && <p className="mt-1">{formation.description}</p>}
                         </div>
@@ -160,7 +160,7 @@ export default function CvPage() {
                 <SectionTitle title="Langues" />
                 <div className="shadow-card p-4 mt-4 flex flex-col gap-2 items-start">
                     {cv.langues.map((langue) => (
-                        <p key={langue._id}>{langue.langue} — {langue.niveau}</p>
+                        <p key={langue._id}>{langue.langue}   {langue.niveau}</p>
                     ))}
                 </div>
             </div>
@@ -191,7 +191,7 @@ export default function CvPage() {
                                 <div key={dispo._id} className="shadow-card p-4">
                                     <h4 className="font-bold">{dispo.type}</h4>
                                     <p className="italic">
-                                        {formatDate(dispo.dateDebut)} {dispo.dateFin && `— ${formatDate(dispo.dateFin)}`}
+                                        {formatDate(dispo.dateDebut)} {dispo.dateFin && `  ${formatDate(dispo.dateFin)}`}
                                     </p>
                                     {dispo.note && <p className="mt-1">{dispo.note}</p>}
                                     {dispo.formationCiblee && <p className="italic mt-1">{dispo.formationCiblee}</p>}
@@ -203,7 +203,7 @@ export default function CvPage() {
 
 
 
-            {/* Téléchargement du CV en PDF — fichier statique, pas lié aux données dynamiques du CV en ligne */}
+            {/* Téléchargement du CV en PDF   fichier statique, pas lié aux données dynamiques du CV en ligne */}
             <a
                 href="/files/CV_Florian-Costes.pdf"
                 download

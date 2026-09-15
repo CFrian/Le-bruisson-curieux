@@ -3,7 +3,7 @@
 // Toutes les requêtes vers le back passent par cette instance.
 // Comportement : si une requête échoue avec 401 (accessToken expiré), on tente
 // automatiquement un refresh (POST /api/auth/refresh) puis on rejoue la requête
-// initiale — invisible pour l'utilisateur, pas de déconnexion intempestive.
+// initiale   invisible pour l'utilisateur, pas de déconnexion intempestive.
 //
 // Si plusieurs requêtes échouent en même temps, un seul refresh est déclenché
 // (isRefreshing), les autres requêtes en attente sont mises en file (failedQueue)
@@ -16,7 +16,7 @@ const api = axios.create({
     withCredentials: true
     // withCredentials: true : par défaut, les requêtes cross-origin 
     // (React sur port 5173, API sur port 3000) n'envoient pas les cookies. 
-    // Cette option force leur envoi — indispensable pour que l'authentification via cookies httpOnly fonctionne.
+    // Cette option force leur envoi   indispensable pour que l'authentification via cookies httpOnly fonctionne.
 });
 
 
@@ -35,7 +35,7 @@ const processQueue = (error) => {
 };
 
 api.interceptors.response.use(
-    // Si la requête réussit, on ne fait rien de spécial — comportement normal
+    // Si la requête réussit, on ne fait rien de spécial   comportement normal
     (response) => response,
 
     // Si la requête échoue, on regarde si c'est un 401 qu'on peut tenter de résoudre
@@ -70,7 +70,7 @@ api.interceptors.response.use(
                 return api(originalRequest); // rejoue la requête initiale avec le nouveau cookie
             } catch (refreshError) {
                 processQueue(refreshError);
-                // Le refresh a échoué (refreshToken expiré/révoqué) — véritable déconnexion,
+                // Le refresh a échoué (refreshToken expiré/révoqué)   véritable déconnexion,
                 // impossible de faire autrement que de renvoyer vers le login.
                 window.location.href = '/admin/login';
                 return Promise.reject(refreshError);

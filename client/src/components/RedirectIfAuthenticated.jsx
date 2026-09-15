@@ -1,5 +1,5 @@
 // Empêche un utilisateur déjà connecté d'accéder à la page de login.
-// Garde-fou de sécurité/logique — indépendant de ce qui est affiché dans la Navbar.
+// Garde-fou de sécurité/logique   indépendant de ce qui est affiché dans la Navbar.
 
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';

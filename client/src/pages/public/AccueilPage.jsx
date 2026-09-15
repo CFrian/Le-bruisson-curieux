@@ -1,4 +1,4 @@
-// Page d'accueil du Blog — point d'entrée du site (redirection depuis "/").
+// Page d'accueil du Blog   point d'entrée du site (redirection depuis "/").
 // Hero isolé (image de fond, inchangé). Reste du contenu en flex-col centré,
 // espacement géré par un seul gap global plutôt que des marges dispersées.
 
@@ -61,7 +61,7 @@ export default function AccueilPage() {
                 </PanelBorderLR>
 
                 <div className="flex flex-col items-center gap-1 shadow-cta p-6 w-fit">
-                    <h2 className="text-3xl font-bold">Les articles</h2>
+                    <h2 className="text-3xl font-bold">A la une</h2>
                     <p className="opacity-70">Films, séries, jeux vidéo</p>
                 </div>
 

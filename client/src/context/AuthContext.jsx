@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
     // loading : true tant qu'on n'a pas encore vérifié si un cookie de session valide existe déjà.
-    // Indispensable car les cookies httpOnly sont invisibles en JS — la seule façon de savoir
+    // Indispensable car les cookies httpOnly sont invisibles en JS   la seule façon de savoir
     // si l'utilisateur est déjà connecté (ex: après un rafraîchissement de page) est de demander
     // au back via une requête. Tant que cette requête n'a pas répondu, on ne sait pas encore.
     const [loading, setLoading] = useState(true);
@@ -46,14 +46,14 @@ export const AuthProvider = ({ children }) => {
             });
     }, []);
 
-    // Appelée après un login réussi — met à jour les deux états
+    // Appelée après un login réussi   met à jour les deux états
     // mustChange vient de la réponse du back { mustChangePassword: true/false }
     const login = (mustChange) => {
         setIsAuthenticated(true);
         setMustChangePassword(mustChange);
     };
 
-    // Appelée après un logout — remet tout à zéro
+    // Appelée après un logout   remet tout à zéro
     const logout = () => {
         setIsAuthenticated(false);
         setMustChangePassword(false);

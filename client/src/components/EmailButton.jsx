@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function EmailButton() {
-    // Email jamais injecté dans le DOM — reste en mémoire JS uniquement,
+    // Email jamais injecté dans le DOM   reste en mémoire JS uniquement,
     // copié directement dans le presse-papier au clic.
     // Protection légère anti-scraping + contourne les soucis de client mail par défaut (mailto: non fiable).
     const reversedEmail = 'moc.liamnotorp@setsoC-nairolF';

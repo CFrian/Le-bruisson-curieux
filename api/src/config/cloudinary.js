@@ -1,5 +1,5 @@
 const { v2: cloudinary } = require('cloudinary');
-//{ v2: cloudinary } — le SDK Cloudinary expose une ancienne API (v1) et une nouvelle (v2), 
+//{ v2: cloudinary }   le SDK Cloudinary expose une ancienne API (v1) et une nouvelle (v2), 
 // j'importe explicitement la version 2, recommandée actuellement.
 
 cloudinary.config({

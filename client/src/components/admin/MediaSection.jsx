@@ -3,7 +3,7 @@
 //
 // Type "image" → sélection différée via ImageUploadInput (onFileSelected) : le fichier
 // est stocké en mémoire avec aperçu local, l'upload Cloudinary réel ne se déclenche
-// qu'au clic sur "Ajouter le média" — jamais avant, pour éviter tout fichier orphelin
+// qu'au clic sur "Ajouter le média"   jamais avant, pour éviter tout fichier orphelin
 // si l'utilisateur change d'avis ou annule.
 // Type "video"/"audio" → simple champ URL (YouTube/Vimeo/SoundCloud...).
 //
@@ -217,7 +217,7 @@ export default function MediaSection({ idArticle, idChapitre, idParagraphe, allo
                         />
                     )}
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                         <Btn contenu={submitting ? "Ajout..." : "Ajouter le média"} type="button" onClick={handleAdd} />
                         <Btn contenu="Annuler" onClick={() => setShowForm(false)} type="button" />
                     </div>

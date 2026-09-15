@@ -2,7 +2,12 @@ const { Article, Auteur, Categorie, Tag, Chapitre, Paragraphe, FicheInfo, Media 
 
 function findAll() {
     return Article.findAll({
-        include: [Auteur, Categorie, Tag],
+        include: [
+            Auteur,
+            Categorie,
+            Tag,
+            { model: Media, as: 'mediasArticle' },
+        ],
         order: [['dateCreationArticle', 'DESC']],
     });
 }

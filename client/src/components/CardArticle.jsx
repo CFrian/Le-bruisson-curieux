@@ -1,10 +1,3 @@
-// Affiche un article de blog en carte : image avec badge durée + favori en overlay,
-// titre, extrait, bouton "Lire l'article", puis date/tag/auteur en pied de carte.
-// Favori géré en localStorage côté client (pas de compte requis).
-// Icônes en SVG inline (fournies par le porteur du projet, Font Awesome).
-// Animation favori : icône "+" tourne à 180° en disparaissant, icône "check"
-// apparaît en tournant jusqu'à 90° — les deux icônes se superposent, seule
-// l'opacité/rotation change selon isFavori.
 
 import { useState } from "react";
 import Btn from "./Btn";
@@ -28,7 +21,7 @@ export default function CardArticle({ idArticle, image, title, comment, auteur, 
     const premierTag = tags?.split(" - ")[0];
 
     return (
-        <div className="shadow-cta flex flex-col w-87.5 h-112.5 overflow-hidden">
+        <div className="shadow-cta flex flex-col w-full max-w-87.5 h-112.5 overflow-hidden">
             <div className="relative w-full h-56">
                 <img src={image} alt={title} className="w-full h-full object-cover" />
 
@@ -40,7 +33,7 @@ export default function CardArticle({ idArticle, image, title, comment, auteur, 
                     <span>{dureeLecture} min</span>
                 </div>
 
-                {/* Favori — plus/check superposés, transition d'opacité + rotation */}
+                {/* Favori   plus/check superposés, transition d'opacité + rotation */}
                 <button
                     onClick={toggleFavori}
                     aria-label={isFavori ? "Retirer des favoris" : "Ajouter aux favoris"}
@@ -58,7 +51,7 @@ export default function CardArticle({ idArticle, image, title, comment, auteur, 
                         viewBox="0 0 640 640"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`absolute inset-0 transition-all duration-300 ${isFavori ? 'rotate-90 opacity-100' : 'rotate-0 opacity-0'}`}
+                        className={`absolute inset-0 transition-all duration-300 ${isFavori ? 'rotate-360 opacity-100' : 'rotate-0 opacity-0'}`}
                     >
                         <path d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z" />
                     </svg>
@@ -67,7 +60,7 @@ export default function CardArticle({ idArticle, image, title, comment, auteur, 
 
             <div className="flex flex-col items-center text-center gap-2 p-4 flex-1">
                 <h3 className="text-xl font-bold">{title}</h3>
-                <p className="text-sm opacity-70">{comment}</p>
+                <p className="text-sm max-[370px]:text-xs ">{comment}</p>
                 {path && <Btn contenu="Lire l'article" path={path} />}
             </div>
 

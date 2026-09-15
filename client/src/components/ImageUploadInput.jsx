@@ -1,8 +1,8 @@
 // Champ de sélection d'image réutilisable.
-// Ne fait AUCUN upload au choix du fichier — stocke seulement le fichier en mémoire
+// Ne fait AUCUN upload au choix du fichier   stocke seulement le fichier en mémoire
 // avec un aperçu local, et notifie le parent via onFileSelected.
 // C'est au parent de déclencher l'upload réel (POST /api/upload) au moment de sa
-// propre soumission de formulaire — jamais avant, pour éviter tout fichier orphelin
+// propre soumission de formulaire   jamais avant, pour éviter tout fichier orphelin
 // sur Cloudinary si l'utilisateur change d'avis ou annule.
 
 import { useState, useEffect } from "react";
@@ -36,7 +36,7 @@ export default function ImageUploadInput({ label, currentImageUrl, onFileSelecte
             <input
                 id={`image-upload-${label}`}
                 type="file"
-                accept="image/jpeg, image/png, image/webp, image/svg+xml"
+                accept="image/jpeg, image/png, image/webp"
                 onChange={handleFileChange}
                 className="hidden"
             />

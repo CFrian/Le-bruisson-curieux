@@ -1,5 +1,5 @@
 // AdminProjectsPage.jsx
-// Liste des projets côté admin — permet d'éditer ou supprimer chaque projet.
+// Liste des projets côté admin   permet d'éditer ou supprimer chaque projet.
 // Route protégée (à vérifier via ta logique de route privée / AuthContext).
 
 import { useEffect, useState } from "react";
@@ -68,8 +68,7 @@ export default function AdminProjectsPage() {
     return (
         <div className="flex flex-col items-center gap-8 p-6 pt-15">
             <BackToDashboard />
-
-            <div className="flex justify-between items-center w-full max-w-4xl">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full max-w-4xl">
                 <h1 className="text-3xl font-bold">Gestion des projets</h1>
                 <Btn contenu="Ajouter un projet" path="/admin/projets/nouveau" />
             </div>
@@ -78,13 +77,11 @@ export default function AdminProjectsPage() {
                 {projects.map((project) => (
                     <div
                         key={project._id}
-                        className="shadow-card p-4 flex justify-between items-center"
+                        className="shadow-card p-4 flex flex-col md:flex-row justify-between items-center gap-3"
                     >
-                        <div>
-                            <h3 className="pl-10 text-xl font-bold">{project.titre}</h3>
-                        </div>
+                        <h3 className="md:pl-10 text-xl font-bold text-center md:text-left">{project.titre}</h3>
 
-                        <div className="flex gap-3">
+                        <div className="flex flex-col items-center md:flex-row gap-3">
                             <Btn contenu="Modifier" path={`/admin/projets/${project._id}/modifier`} />
                             <Btn contenu="Supprimer" onClick={() => handleDeleteClick(project)} variant="danger" />
                         </div>
@@ -92,7 +89,7 @@ export default function AdminProjectsPage() {
                 ))}
             </div>
 
-            {/* Modale de confirmation — affichée uniquement si projectToDelete n'est pas null */}
+            {/* Modale de confirmation   affichée uniquement si projectToDelete n'est pas null */}
             <ConfirmDeleteModal
                 isOpen={projectToDelete !== null}
                 itemLabel={projectToDelete?.titre}

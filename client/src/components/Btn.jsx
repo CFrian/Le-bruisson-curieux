@@ -8,7 +8,7 @@
 import { Link } from "react-router-dom"
 
 export default function Btn({ contenu, onClick, path, type = "button", variant = "default" }) {
-    const baseClassName = "m-5 text-2xl shadow-cta hover:shadow-card transition-shadow duration-200 p-3 flex flex-col items-center w-fit cursor-pointer"
+    const baseClassName = "m-5 text-xl sm:text-2xl text-center shadow-cta hover:shadow-card transition-shadow duration-200 p-3 flex flex-col items-center w-fit cursor-pointer"
 
     // Variante visuelle : "danger" pour les actions destructives (supprimer)
     const variantClassName = variant === "danger"

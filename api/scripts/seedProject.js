@@ -28,7 +28,7 @@ const projectsData = [
     },
     {
         titre: "Sonodeck",
-        description: "Projet audio interactif — à compléter selon le contenu réel.",
+        description: "Projet audio interactif   à compléter selon le contenu réel.",
         stack: ["JavaScript", "Web Audio API", "audio", "dev"],
         lienDemo: "",
         lienRepo: "https://github.com/CFrian/Le-bruisson-curieux",

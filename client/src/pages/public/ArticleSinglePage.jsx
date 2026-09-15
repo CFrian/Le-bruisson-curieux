@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import { getVideoEmbed } from "../../utils/videoEmbed";
 
-// Affiche un média selon son type : image classique, audio natif, ou vidéo —
+// Affiche un média selon son type : image classique, audio natif, ou vidéo  
 // intégration YouTube/Vimeo via iframe si l'URL est reconnue, sinon <video> classique
 // en dernier recours (fichier vidéo direct).
 function MediaDisplay({ media }) {
@@ -60,7 +60,7 @@ export default function ArticleSinglePage() {
             });
     }, [slug]);
 
-    // Favori stocké en localStorage — pas de compte requis, cohérent avec la décision
+    // Favori stocké en localStorage   pas de compte requis, cohérent avec la décision
     // actée pour le blog. Dépend du chargement de l'article (idArticle), d'où un
     // useEffect séparé plutôt qu'un état initial calculé directement.
     useEffect(() => {
@@ -93,12 +93,12 @@ export default function ArticleSinglePage() {
     return (
         <article className="flex flex-col gap-8 p-6 max-w-3xl mx-auto pt-15">
 
-            {/* Titre — même style visuel que Btn.jsx */}
+
             <h1 className="text-3xl font-bold text-center shadow-cta p-3 w-fit mx-auto">
                 {article.titreArticle}
             </h1>
 
-            {/* Bloc méta — chaque item dans sa propre boîte, même style que Btn.jsx */}
+
             <div className="flex flex-wrap justify-center gap-3">
                 <button onClick={toggleFavori} className="shadow-cta hover:shadow-card transition-shadow duration-200 p-3 cursor-pointer">
                     {isFavori ? "★ Retirer des favoris" : "☆ Ajouter aux favoris"}
@@ -119,14 +119,14 @@ export default function ArticleSinglePage() {
                 </span>
             </div>
 
-            {/* Image de couverture — médias niveau article, uniquement le type image */}
+
             {article.mediasArticle
                 ?.filter((media) => media.typeMedia === 'image')
                 .map((media) => (
                     <MediaDisplay key={media.idMedia} media={media} />
                 ))}
 
-            {/* Fiche info technique (clé/valeur, ex: Studio, Sortie, Musique...) */}
+
             {article.FicheInfos?.length > 0 && (
                 <aside className="border-l-2 border-r-2 border-gray-400 px-8 py-4 flex flex-col gap-1 italic mx-auto max-w-md">
                     {article.FicheInfos.map((fiche) => (
@@ -142,7 +142,7 @@ export default function ArticleSinglePage() {
                 <p className="italic">{article.contenuIntroArticle}</p>
             )}
 
-            {/* Média principal — vidéo/audio niveau article, sur lequel l'analyse s'appuie */}
+            {/* Média principal - vidéo/audio niveau article, sur lequel l'analyse s'appuie */}
             {article.mediasArticle
                 ?.filter((media) => media.typeMedia === 'video' || media.typeMedia === 'audio')
                 .map((media) => (

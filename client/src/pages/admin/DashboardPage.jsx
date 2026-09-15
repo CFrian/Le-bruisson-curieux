@@ -1,5 +1,5 @@
-// Page d'accueil de l'espace admin — navigation vers les différentes sections gérables.
-// Organisée en 3 blocs : Compte (transversal), Portfolio, Blog — pour cloisonner visuellement
+// Page d'accueil de l'espace admin   navigation vers les différentes sections gérables.
+// Organisée en 3 blocs : Compte (transversal), Portfolio, Blog   pour cloisonner visuellement
 // les deux univers gérés depuis un même espace admin. Séparateur vertical entre les deux colonnes.
 // Protégée par authentification (à vérifier !! via AuthContext/route protégée).
 
@@ -22,7 +22,7 @@ const blogSections = [
     { id: "tags", title: "Tags", path: "/admin/tags", description: "Gérer les tags des articles" },
     { id: "categories", title: "Catégories", path: "/admin/categories", description: "Gérer les catégories des articles" },
 
-    // Soundboard — projet annexe en bonus
+    // Soundboard   projet annexe en bonus
     // { id: "sonodeck", title: "Sonodeck", path: "/admin/sonodeck", description: "Gérer le catalogue de sons (à venir)" },
 ];
 

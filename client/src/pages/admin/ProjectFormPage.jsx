@@ -55,7 +55,7 @@ export default function ProjectFormPage() {
             .filter((tag) => tag.length > 0);
 
         try {
-            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du projet —
+            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du projet  
             // jamais avant, pour éviter tout fichier orphelin si l'utilisateur change d'avis.
             let finalImageUrl = image;
 

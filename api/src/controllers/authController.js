@@ -113,7 +113,7 @@ const forgotPassword = async (req, res, next) => {
     try {
         const { email } = req.body;
         await authService.forgotPassword(email);
-        // Réponse identique que l'email existe ou non en base — évite l'énumération de comptes
+        // Réponse identique que l'email existe ou non en base   évite l'énumération de comptes
         res.json({ message: 'Si cet email existe, un lien de réinitialisation a été envoyé.' });
     } catch (err) {
         next(err);

@@ -12,17 +12,17 @@ export const prestations = [
         id: "audio",
         image: soundDesignImg,
         title: "Audio",
-        comment: "Production, mixage, sound design, identité sonore, formations — du studio à la livraison",
+        comment: "Production, mixage, sound design, identité sonore, formations   du studio à la livraison",
         items: [
             {
                 id: "production-audio",
                 title: "Pré-production & Post-production",
-                comment: "Enregistrement, montage, mixage — livraison aux normes Web, ciné, pub ou Podcast"
+                comment: "Enregistrement, montage, mixage   livraison aux normes Web, ciné, pub ou Podcast"
             },
             {
                 id: "sound-design",
                 title: "Sound Design & Création sonore",
-                comment: "Habillage sonore, jingles, identité sonore, bruitages, SFX — pour la vidéo, le jeu ou le podcast"
+                comment: "Habillage sonore, jingles, identité sonore, bruitages, SFX   pour la vidéo, le jeu ou le podcast"
             },
             {
                 id: "formations-ateliers",
@@ -35,12 +35,12 @@ export const prestations = [
         id: "developpement",
         image: experienceInteractiveImg,
         title: "Développement web",
-        comment: "Sites, e-commerce, outils métier, expériences interactives — du besoin à la mise en ligne",
+        comment: "Sites, e-commerce, outils métier, expériences interactives   du besoin à la mise en ligne",
         items: [
             {
                 id: "presence-en-ligne",
                 title: "Présence en ligne",
-                comment: "Site vitrine, portfolio, blog — avec ou sans espace admin pour gérer le contenu"
+                comment: "Site vitrine, portfolio, blog   avec ou sans espace admin pour gérer le contenu"
             },
             {
                 id: "vente-en-ligne",

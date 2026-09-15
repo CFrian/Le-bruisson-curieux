@@ -14,7 +14,7 @@ async function testArticle() {
     });
 
     if (!article) {
-      console.log('Aucun article trouvé — vérifie que la ligne existe bien en base.');
+      console.log('Aucun article trouvé   vérifie que la ligne existe bien en base.');
       return;
     }
 

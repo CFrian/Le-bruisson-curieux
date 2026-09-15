@@ -21,7 +21,7 @@ export default function AdminCategoriesPage() {
     const [slugCategorie, setSlugCategorie] = useState("");
     const [submitting, setSubmitting] = useState(false);
 
-    // Formulaire d'édition inline — état séparé, propre à la catégorie en cours de modification
+    // Formulaire d'édition inline   état séparé, propre à la catégorie en cours de modification
     const [editingCategorie, setEditingCategorie] = useState(null);
     const [editNomCategorie, setEditNomCategorie] = useState("");
     const [editSlugCategorie, setEditSlugCategorie] = useState("");
@@ -118,7 +118,7 @@ export default function AdminCategoriesPage() {
 
             <h1 className="text-3xl font-bold">Catégories</h1>
 
-            {/* Formulaire d'ajout — toujours en haut, jamais pré-rempli */}
+            {/* Formulaire d'ajout : toujours en haut, jamais pré-rempli */}
             <form onSubmit={handleAdd} className="shadow-card p-5 flex flex-col gap-4">
                 <h2 className="font-bold">Ajouter une catégorie</h2>
                 <FormInput
@@ -141,7 +141,7 @@ export default function AdminCategoriesPage() {
                 />
             </form>
 
-            {/* Liste des catégories — le formulaire d'édition apparaît juste sous la catégorie cliquée */}
+            {/* Liste des catégories : le formulaire d'édition apparaît juste sous la catégorie cliquée */}
             <div className="flex flex-col gap-3">
                 {categories.map((categorie) => (
                     <div key={categorie.idCategorie} className="flex flex-col gap-2">
@@ -171,7 +171,7 @@ export default function AdminCategoriesPage() {
                                     value={editSlugCategorie}
                                     onChange={(e) => setEditSlugCategorie(e.target.value)}
                                 />
-                                <div className="flex gap-3">
+                                <div className="flex flex-col sm:flex-row gap-3">
                                     <Btn
                                         contenu={editSubmitting ? "Enregistrement..." : "Enregistrer"}
                                         type="submit"

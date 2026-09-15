@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
         try {
             await api.post('/api/auth/forgot-password', { email });
             // Le back renvoie toujours ce même message, que l'email existe ou non
-            // (évite l'énumération de comptes) — donc pas de branche succès/erreur ici,
+            // (évite l'énumération de comptes)   donc pas de branche succès/erreur ici,
             // on affiche systématiquement la confirmation.
             setSubmitted(true);
         } catch (err) {

@@ -28,14 +28,14 @@ const generateRefreshToken = (userId) => {
 // Vérifie email + mot de passe, renvoie les deux tokens si OK
 const login = async (email, password) => {
 
-    const user = await authRepository.findByEmail(email)
+    const user = await authRepository.findByEmail(email);
     if (!user) {
         const error = new Error('identifiant invalide')
         error.statusCode = 401
         throw error
     }
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
         const error = new Error('identifiant invalide')
@@ -43,11 +43,11 @@ const login = async (email, password) => {
         throw error
     }
 
-    const accessToken = generateAccessToken(user._id)
-    const refreshToken = generateRefreshToken(user._id)
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
 
 
-    await refreshTokenRepository.save(refreshToken, user._id) //sauvegarde le refresh token  !
+    await refreshTokenRepository.save(refreshToken, user._id); //sauvegarde le refresh token  !
 
     return {
         accessToken,
@@ -87,17 +87,17 @@ const changePassword = async (userId, oldPassword, newPassword) => {
         throw error;
     }
 
-    const hashed = await bcrypt.hash(newPassword, 10)
+    const hashed = await bcrypt.hash(newPassword, 10);
     await authRepository.updateUser(userId, {
         password: hashed,
         mustChangePassword: false,
         tempPasswordExpireAt: null
     })
 
-    // Révoque toutes les sessions actives de cet utilisateur — si le mot de passe
+    // Révoque toutes les sessions actives de cet utilisateur   si le mot de passe
     // a été changé suite à une compromission (ou juste par prudence), on force
     // une reconnexion partout, y compris sur d'éventuels autres appareils/navigateurs.
-    await refreshTokenRepository.deleteAllForUser(userId)
+    await refreshTokenRepository.deleteAllForUser(userId);
 }
 
 const updateEmail = async (userId, newEmail, currentPassword) => {
@@ -108,7 +108,7 @@ const updateEmail = async (userId, newEmail, currentPassword) => {
         throw error;
     }
 
-    // Vérifie le mot de passe actuel avant de changer l'email —
+    // Vérifie le mot de passe actuel avant de changer l'email  
     // même logique de sécurité que changePassword : une session active seule
     // ne doit pas suffire à modifier une info sensible du compte.
     const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -126,13 +126,13 @@ const updateEmail = async (userId, newEmail, currentPassword) => {
 
 
 const refresh = async (refreshToken) => {
-    const stored = await refreshTokenRepository.findToken(refreshToken)
+    const stored = await refreshTokenRepository.findToken(refreshToken);
     if (!stored) {
-        const error = new Error('Session expirée, veuillez vous reconnecter')
-        error.statusCode = 401
-        throw error
+        const error = new Error('Session expirée, veuillez vous reconnecter');
+        error.statusCode = 401;
+        throw error;
     }
-
+    ;
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET)
     return generateAccessToken(decoded.id);
 }
@@ -148,12 +148,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Génère un token de reset, l'enregistre (hashé) en base avec une expiration de 15 min,
 // puis envoie un email contenant le lien avec le token EN CLAIR.
-// Le token en clair n'existe jamais en base — seul son hash y est stocké,
+// Le token en clair n'existe jamais en base   seul son hash y est stocké,
 // pour qu'un accès en lecture à la BDD ne permette pas de forger des liens valides.
 const forgotPassword = async (email) => {
     const user = await authRepository.findByEmail(email);
 
-    // Ne révèle jamais si l'email existe ou non en base — sinon on donne
+    // Ne révèle jamais si l'email existe ou non en base   sinon on donne
     // à un attaquant un moyen de vérifier quels emails sont enregistrés
     // (énumération de comptes). On répond "succès" dans tous les cas côté controller.
     if (!user) return;
@@ -209,7 +209,7 @@ const resetPassword = async (rawToken, newPassword) => {
     await authRepository.updateUser(user._id, {
         password: hashed,
         mustChangePassword: false,
-        resetPasswordToken: null,       // token à usage unique — invalidé après utilisation
+        resetPasswordToken: null,       // token à usage unique   invalidé après utilisation
         resetPasswordExpiresAt: null
     });
 

@@ -1,4 +1,4 @@
-// Page "Mon compte" — permet de changer l'email et le mot de passe à volonté,
+// Page "Mon compte"   permet de changer l'email et le mot de passe à volonté,
 // contrairement à ChangePasswordPage qui ne sert qu'au flux de premier login forcé.
 
 import { useState } from "react";
@@ -68,7 +68,7 @@ export default function AccountSettingsPage() {
 
             <h1 className="text-2xl font-bold">Mon compte</h1>
 
-            {/* Formulaire email — séparé du mot de passe : chaque action a sa propre
+            {/* Formulaire email   séparé du mot de passe : chaque action a sa propre
                 confirmation par mot de passe actuel, sa propre soumission indépendante. */}
             <form onSubmit={handleEmailSubmit} className="w-full max-w-md p-5 shadow-2xl gap-5 flex flex-col">
                 <h2 className="text-xl font-bold">Changer l'email</h2>

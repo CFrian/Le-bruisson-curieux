@@ -72,7 +72,7 @@ async function deleteMedia(id) {
             await cloudinary.uploader.destroy(media.publicIdMedia);
         } catch (err) {
             console.error('Erreur suppression Cloudinary :', err.message);
-            // On continue quand même la suppression en base — ne pas bloquer
+            // On continue quand même la suppression en base   ne pas bloquer
             // l'utilisateur si Cloudinary est temporairement indisponible.
         }
     }

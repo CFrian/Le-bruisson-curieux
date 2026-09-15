@@ -24,7 +24,7 @@ export default function ChapitresSection({ idArticle }) {
     const [ordreChap, setOrdreChap] = useState("1");
     const [submitting, setSubmitting] = useState(false);
 
-    // Formulaire d'édition inline — état séparé
+    // Formulaire d'édition inline   état séparé
     const [editingChapitre, setEditingChapitre] = useState(null);
     const [editTitreChap, setEditTitreChap] = useState("");
     const [editOrdreChap, setEditOrdreChap] = useState("1");
@@ -119,7 +119,7 @@ export default function ChapitresSection({ idArticle }) {
                             </div>
                         </div>
 
-                        {/* Formulaire d'édition inline — affiché seulement sous le chapitre cliqué */}
+                        {/* Formulaire d'édition inline   affiché seulement sous le chapitre cliqué */}
                         {editingChapitre?.idChapitre === chapitre.idChapitre && (
                             <div className="p-4 flex flex-col gap-3 border-l-4 border-blue-500">
                                 <h4 className="font-bold">Modifier le chapitre</h4>
@@ -160,7 +160,7 @@ export default function ChapitresSection({ idArticle }) {
                 ))}
             </div>
 
-            {/* Formulaire d'ajout — après la liste */}
+            {/* Formulaire d'ajout   après la liste */}
             <div className="flex flex-col gap-3">
                 <h3 className="font-bold">Ajouter un chapitre</h3>
                 <FormInput

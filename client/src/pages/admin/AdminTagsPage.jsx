@@ -21,7 +21,7 @@ export default function AdminTagsPage() {
     const [slugTag, setSlugTag] = useState("");
     const [submitting, setSubmitting] = useState(false);
 
-    // Formulaire d'édition inline — état séparé, propre au tag en cours de modification
+    // Formulaire d'édition inline   état séparé, propre au tag en cours de modification
     const [editingTag, setEditingTag] = useState(null);
     const [editNomTag, setEditNomTag] = useState("");
     const [editSlugTag, setEditSlugTag] = useState("");
@@ -115,7 +115,7 @@ export default function AdminTagsPage() {
 
             <h1 className="text-3xl font-bold">Tags</h1>
 
-            {/* Formulaire d'ajout — toujours en haut, jamais pré-rempli */}
+            {/* Formulaire d'ajout   toujours en haut, jamais pré-rempli */}
             <form onSubmit={handleAdd} className="shadow-card p-5 flex flex-col gap-4">
                 <h2 className="font-bold">Ajouter un tag</h2>
                 <FormInput
@@ -138,7 +138,7 @@ export default function AdminTagsPage() {
                 />
             </form>
 
-            {/* Liste des tags — le formulaire d'édition apparaît juste sous le tag cliqué */}
+            {/* Liste des tags   le formulaire d'édition apparaît juste sous le tag cliqué */}
             <div className="flex flex-col gap-3">
                 {tags.map((tag) => (
                     <div key={tag.idTag} className="flex flex-col gap-2">
@@ -168,7 +168,7 @@ export default function AdminTagsPage() {
                                     value={editSlugTag}
                                     onChange={(e) => setEditSlugTag(e.target.value)}
                                 />
-                                <div className="flex gap-3">
+                                <div className="flex flex-col sm:flex-row gap-3">
                                     <Btn
                                         contenu={editSubmitting ? "Enregistrement..." : "Enregistrer"}
                                         type="submit"

@@ -1,6 +1,6 @@
 // Utilitaires de validation/sanitation, réutilisés par tous les services Sequelize.
 
-// Slug : uniquement minuscules, chiffres, tirets — jamais d'espace, de majuscule ou d'accent.
+// Slug : uniquement minuscules, chiffres, tirets   jamais d'espace, de majuscule ou d'accent.
 function isValidSlug(slug) {
     return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
 }

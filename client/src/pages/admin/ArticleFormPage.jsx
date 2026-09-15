@@ -20,8 +20,7 @@ const scrollToTop = () => {
 export default function ArticleFormPage() {
     const { id: idFromUrl } = useParams();
 
-    // idArticle : source unique de vérité pour "l'article existe-t-il ?"
-    // Vient de l'URL en mode édition, ou se remplit après une création réussie
+
     const [idArticle, setIdArticle] = useState(idFromUrl || null);
     const isEditMode = Boolean(idFromUrl);
 
@@ -106,11 +105,11 @@ export default function ArticleFormPage() {
                 const response = await api.post('/api/articles', articleData);
                 currentId = response.data.idArticle;
                 setIdArticle(currentId);
-                toast.success("Article créé — tu peux maintenant ajouter du contenu ci-dessous.");
+                toast.success("Article créé : tu peux maintenant ajouter du contenu ci-dessous.");
             }
 
             await api.put(`/api/articles/${currentId}/tags`, { tagIds: selectedTagIds });
-            // Pas de navigate() — on reste sur la page, les sections en dessous se débloquent
+            // Pas de navigate()   on reste sur la page, les sections en dessous se débloquent
         } catch (err) {
             toast.error(err.response?.data?.message || "Erreur lors de l'enregistrement.");
         } finally {
@@ -266,7 +265,7 @@ export default function ArticleFormPage() {
                 <MediaSection idArticle={idArticle} allowedTypes={["video", "audio"]} />
             </div>
 
-            {/* Section Chapitres — grisée et non cliquable tant que l'article n'existe pas */}
+            {/* Section Chapitres   grisée et non cliquable tant que l'article n'existe pas */}
             <div
                 className={`w-full max-w-md transition-opacity duration-300 ${idArticle ? "opacity-100" : "opacity-40 pointer-events-none"
                     }`}

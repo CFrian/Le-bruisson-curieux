@@ -1,11 +1,7 @@
 // Hook personnalisé factorisant la logique commune à tous les tableaux éditables du CV
 // (langues, réseaux, compétences, formations...) : ajout, modification, suppression
 // avec confirmation via modale.
-//
-// Usage : const langues = useEditableArray(initialData.langues, { langue: "", niveau: "" });
-// Puis : langues.items, langues.add(), langues.update(index, field, value),
-// langues.requestDelete(index), langues.confirmDelete(), langues.cancelDelete(),
-// langues.indexToDelete (pour piloter la modale)
+
 
 import { useState } from "react";
 

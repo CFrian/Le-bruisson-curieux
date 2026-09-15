@@ -83,7 +83,7 @@ function App() {
 
       </BrowserRouter >
 
-      {/* ToastContainer — affiche les notifications react-toastify sur toute l'app */}
+      {/* ToastContainer   affiche les notifications react-toastify sur toute l'app */}
       < ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider >
   );

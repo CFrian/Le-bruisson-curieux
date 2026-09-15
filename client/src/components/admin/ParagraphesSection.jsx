@@ -20,7 +20,7 @@ export default function ParagraphesSection({ idArticle, idChapitre }) {
     const [ordreParagraphe, setOrdreParagraphe] = useState("1");
     const [submitting, setSubmitting] = useState(false);
 
-    // Formulaire d'édition inline — état séparé, propre au paragraphe en cours de modification
+    // Formulaire d'édition inline   état séparé, propre au paragraphe en cours de modification
     const [editingParagraphe, setEditingParagraphe] = useState(null);
     const [editTitreParagraphe, setEditTitreParagraphe] = useState("");
     const [editContenuParagraphe, setEditContenuParagraphe] = useState("");
@@ -113,7 +113,7 @@ export default function ParagraphesSection({ idArticle, idChapitre }) {
                         <div className="shadow-card p-3 flex flex-col gap-2">
                             <p className="font-bold text-sm">
                                 Paragraphe {paragraphe.ordreParagraphe}
-                                {paragraphe.titreParagraphe && ` — ${paragraphe.titreParagraphe}`}
+                                {paragraphe.titreParagraphe && `   ${paragraphe.titreParagraphe}`}
                             </p>
                             <p className="whitespace-pre-wrap text-sm">{paragraphe.contenuParagraphe}</p>
                             <div className="flex gap-2">
@@ -122,7 +122,7 @@ export default function ParagraphesSection({ idArticle, idChapitre }) {
                             </div>
                         </div>
 
-                        {/* Formulaire d'édition inline — affiché seulement sous le paragraphe cliqué */}
+                        {/* Formulaire d'édition inline   affiché seulement sous le paragraphe cliqué */}
                         {editingParagraphe?.idParagraphe === paragraphe.idParagraphe && (
                             <div className="shadow-card p-4 flex flex-col gap-3 border-l-4 border-blue-500">
                                 <h4 className="font-bold">Modifier le paragraphe</h4>

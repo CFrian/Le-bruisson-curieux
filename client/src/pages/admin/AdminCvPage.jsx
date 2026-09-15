@@ -32,7 +32,7 @@ export default function AdminCvPage() {
 
 
 
-    // Stocke le CV complet tel que reçu de l'API — sert de base pour ne pas perdre
+    // Stocke le CV complet tel que reçu de l'API   sert de base pour ne pas perdre
     // les champs non édités ici (reseaux, localisation.ville, photo, etc.)
     const [cv, setCv] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -159,7 +159,7 @@ export default function AdminCvPage() {
             .filter((z) => z.length > 0);
 
         try {
-            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du CV —
+            // L'upload Cloudinary ne se déclenche qu'ici, juste avant la sauvegarde du CV  
             // jamais avant, pour éviter tout fichier orphelin si l'utilisateur change d'avis.
             let finalPhotoUrl = photo;
 
@@ -314,7 +314,7 @@ export default function AdminCvPage() {
 
 
                     {langues.items.map((langue, index) => (
-                        <div key={index} className="flex gap-3 items-end shadow-card p-3">
+                        <div key={index} className="flex flex-col md:flex-row md:items-end gap-3 shadow-card p-3">
                             <FormInput
                                 label="Langue"
                                 id={`langue-${index}`}
@@ -340,7 +340,7 @@ export default function AdminCvPage() {
                 <AccordionSection title="Réseaux">
 
                     {reseaux.items.map((reseau, index) => (
-                        <div key={index} className="flex gap-3 items-end shadow-card p-3">
+                        <div key={index} className="flex flex-col md:flex-row md:items-end gap-3 shadow-card p-3">
                             <FormInput
                                 label="Plateforme"
                                 id={`plateforme-${index}`}
@@ -375,7 +375,7 @@ export default function AdminCvPage() {
                 <AccordionSection title="Compétences techniques">
 
                     {blocsTechniques.items.map((bloc, index) => (
-                        <div key={index} className="flex gap-3 items-end shadow-card p-3">
+                        <div key={index} className="flex flex-col md:flex-row md:items-end gap-3 shadow-card p-3">
                             <FormInput
                                 label="Contexte"
                                 id={`bloc-contexte-${index}`}
@@ -444,7 +444,7 @@ export default function AdminCvPage() {
                                 placeholder="Ex: Développement web"
                             />
 
-                            <div className="flex gap-3">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <FormInput
                                     label="Date de début"
                                     id={`formation-dateDebut-${index}`}
@@ -509,7 +509,7 @@ export default function AdminCvPage() {
                                 placeholder="Ex: Mission au sein d'une agence web"
                             />
 
-                            {/* Select natif pour l'enum "type" — pas géré par FormInput, structure différente */}
+                            {/* Select natif pour l'enum "type"   pas géré par FormInput, structure différente */}
                             <div className="flex flex-col gap-2">
                                 <label htmlFor={`experience-type-${index}`}>Type</label>
                                 <select
@@ -524,7 +524,7 @@ export default function AdminCvPage() {
                                 </select>
                             </div>
 
-                            <div className="flex gap-3">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <FormInput
                                     label="Date de début"
                                     id={`experience-dateDebut-${index}`}
@@ -572,7 +572,7 @@ export default function AdminCvPage() {
                 <AccordionSection title="Compétences transverses">
 
                     {competencesTransverses.items.map((comp, index) => (
-                        <div key={index} className="flex gap-3 items-end shadow-card p-3">
+                        <div key={index} className="flex flex-col md:flex-row md:items-end gap-3 shadow-card p-3">
                             <FormInput
                                 label="Catégorie"
                                 id={`competence-categorie-${index}`}
@@ -599,7 +599,7 @@ export default function AdminCvPage() {
                 <AccordionSection title="Centres d'intérêt">
 
                     {interets.items.map((interet, index) => (
-                        <div key={index} className="flex gap-3 items-end shadow-card p-3">
+                        <div key={index} className="flex flex-col md:flex-row md:items-end gap-3 shadow-card p-3">
                             <FormInput
                                 label="Catégorie"
                                 id={`interet-categorie-${index}`}
@@ -634,7 +634,7 @@ export default function AdminCvPage() {
                                 placeholder="Ex: Immédiate, Alternance..."
                             />
 
-                            <div className="flex gap-3">
+                            <div className="flex flex-col sm:flex-row gap-3">
                                 <FormInput
                                     label="Date de début"
                                     id={`dispo-dateDebut-${index}`}
@@ -737,7 +737,7 @@ export default function AdminCvPage() {
                     type="button"
                     onClick={scrollToTop}
                     aria-label="Remonter en haut de la page"
-                    className="translate-x-full shadow-cta hover:shadow-card transition-shadow duration-200 p-4 cursor-pointer bg-black text-white"
+                    className="shadow-cta hover:shadow-card transition-shadow duration-200 p-4 cursor-pointer bg-black text-white"
                 >
                     ↑
                 </button>

@@ -1,5 +1,5 @@
 // ChangePasswordPage.jsx
-// Page de changement de mot de passe obligatoire — affichée après une première connexion
+// Page de changement de mot de passe obligatoire   affichée après une première connexion
 // avec un mot de passe temporaire (mustChangePassword: true côté back).
 
 import { useState } from 'react';
@@ -29,7 +29,7 @@ export default function ChangePasswordPage() {
 
             toast.success(data.message || "Mot de passe modifié avec succès.");
 
-            // Le flag mustChangePassword est maintenant à false côté back —
+            // Le flag mustChangePassword est maintenant à false côté back  
             // on redirige vers le dashboard, plus besoin de repasser par ce formulaire
             navigate('/admin/dashboard');
 

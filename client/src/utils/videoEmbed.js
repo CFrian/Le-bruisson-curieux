@@ -24,5 +24,5 @@ export function getVideoEmbed(url) {
         };
     }
 
-    return null; // URL non reconnue — on retombe sur l'affichage brut en dernier recours
+    return null; // URL non reconnue   on retombe sur l'affichage brut en dernier recours
 }

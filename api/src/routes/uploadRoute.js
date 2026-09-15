@@ -2,7 +2,7 @@
 // Route générique d'upload de fichiers vers Cloudinary.
 
 // N'utilise PAS multer-storage-cloudinary (package abandonné, incompatible avec
-// cloudinary v2 — voir points de compréhension). À la place : multer garde le fichier
+// cloudinary v2   voir points de compréhension). À la place : multer garde le fichier
 // en mémoire (buffer), puis on l'envoie nous-mêmes à Cloudinary via upload_stream().
 
 const express = require('express');

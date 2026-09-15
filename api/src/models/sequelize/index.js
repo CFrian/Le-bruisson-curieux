@@ -46,7 +46,7 @@ Paragraphe.belongsTo(Chapitre, { foreignKey: 'idChapitre' });
 Article.hasMany(FicheInfo, { foreignKey: 'idArticle' });
 FicheInfo.belongsTo(Article, { foreignKey: 'idArticle' });
 
-// MEDIA — 3 rattachements, chacun avec un alias distinct
+// MEDIA   3 rattachements, chacun avec un alias distinct
 Article.hasMany(Media, { foreignKey: 'idArticle', as: 'mediasArticle' });
 Media.belongsTo(Article, { foreignKey: 'idArticle', as: 'article' });
 

@@ -9,7 +9,7 @@ export default function AproposPage() {
             <h1 className="text-3xl font-bold">À propos</h1>
             <p>
                 Le Bruisson Curieux est un espace consacré à l'analyse sonore dans les jeux vidéo,
-                films et séries — sound design, musique, bruitage, prise de son.
+                films et séries   sound design, musique, bruitage, prise de son.
             </p>
             <p>
                 Je suis aussi développeur web.{" "}

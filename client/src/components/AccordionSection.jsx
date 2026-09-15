@@ -2,7 +2,7 @@
 // un formulaire long (ex: AdminCvPage) en regroupant chaque bloc sous un titre cliquable.
 //
 // Contrairement à l'accordéon des prestations (une seule catégorie ouverte à la fois),
-// chaque AccordionSection gère son propre état d'ouverture, indépendant des autres —
+// chaque AccordionSection gère son propre état d'ouverture, indépendant des autres  
 // utile ici car on peut vouloir éditer plusieurs sections en même temps.
 
 import { useState } from "react";

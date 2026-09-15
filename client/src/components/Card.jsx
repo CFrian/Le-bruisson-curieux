@@ -1,28 +1,27 @@
 // Affiche une prestation, un projet ou un article.
 // Si stacks/lienDemo/lienRepo sont fournis (cas "projet"), les boutons correspondants
-// s'affichent conditionnellement — une prestation simple n'affiche que l'image/titre/comment.
+// s'affichent conditionnellement   une prestation simple n'affiche que l'image/titre/comment.
 // Si path est fourni (cas "article" ou navigation interne future), un bouton de navigation
-// SPA s'affiche via Btn/Link — distinct des liens externes (lienDemo/lienRepo).
+// SPA s'affiche via Btn/Link   distinct des liens externes (lienDemo/lienRepo).
 
 import Btn from "./Btn";
 
 export default function Card({ image, title, comment, stacks, lienDemo, lienRepo, path, linkLabel = "En savoir plus" }) {
     return (
         <div className="shadow-cta p-6 flex flex-col items-center w-full gap-6">
-            <div div className="h-50 " >
+            <div className="h-50 w-full">
                 <img src={image} alt={title} className="w-full h-full object-cover" />
-            </div >
+            </div>
             <div className="h-50 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold">{title}</h3>
-                <p className="text-[1.3rem]">{comment}</p>
+                <h3 className="text-2xl max-[370px]:text-lg font-bold">{title}</h3>
+                <p className="text-sm max-[370px]:text-xs">{comment}</p>
                 {stacks && <p className="italic mt-7">{stacks}</p>}
             </div>
 
             {path && <Btn contenu={linkLabel} path={path} />}
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
                 {lienDemo && (
-
                     <a href={lienDemo}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -32,7 +31,6 @@ export default function Card({ image, title, comment, stacks, lienDemo, lienRepo
                     </a>
                 )}
                 {lienRepo && (
-
                     <a href={lienRepo}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -40,9 +38,8 @@ export default function Card({ image, title, comment, stacks, lienDemo, lienRepo
                     >
                         GitHub
                     </a>
-                )
-                }
-            </div >
-        </div >
+                )}
+            </div>
+        </div>
     )
 }

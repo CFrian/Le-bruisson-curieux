@@ -66,8 +66,12 @@ export default function ProjectsPage() {
     return (
         <div className="flex flex-col items-center gap-8 p-6 pt-15">
 
-            {/* Boutons de filtre — chaque clic met à jour le state "filter" */}
-            <div className="flex gap-5">
+            {/* Boutons de filtre   chaque clic met à jour le state "filter" */}
+            <div className="flex flex-wrap justify-center gap-5">
+                <Btn
+                    contenu="Tous les projets"
+                    onClick={() => setFilter(null)}
+                />
                 <Btn
                     contenu="Développement"
                     onClick={() => setFilter("dev")}
@@ -75,10 +79,6 @@ export default function ProjectsPage() {
                 <Btn
                     contenu="Audio"
                     onClick={() => setFilter("audio")}
-                />
-                <Btn
-                    contenu="Tous les projets"
-                    onClick={() => setFilter(null)}
                 />
             </div>
 
