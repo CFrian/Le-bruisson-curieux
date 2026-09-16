@@ -9,8 +9,7 @@ const seed = async () => {
     //supprime l'admin existant pour éviter les doublons
     await User.deleteMany({})
 
-    const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10) //Nombre de fois que bcrypt applique son algorithme de hachage
-
+    const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10)
     await User.create({
         email: process.env.ADMIN_EMAIL,
         password: hashedPassword

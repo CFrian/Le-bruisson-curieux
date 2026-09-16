@@ -1,16 +1,11 @@
-// Contexte global d'authentification.
 // Permet à n'importe quel composant de savoir si l'admin est connecté,
-// sans avoir à passer l'info de composant en composant (prop drilling).
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axiosConfig';
 
 // createContext crée un "espace de partage" global accessible depuis n'importe quel composant enfant
-// null = valeur par défaut si le composant est utilisé hors du Provider
 const AuthContext = createContext(null);
 
-// AuthProvider est le composant qui englobe toute l'app (voir main.jsx plus tard)
-// children = tout ce qui est imbriqué à l'intérieur de ce composant
+// AuthProvider est le composant qui englobe toute l'app
 export const AuthProvider = ({ children }) => {
 
     // isAuthenticated : true si l'admin est connecté, false sinon
@@ -20,10 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
     // loading : true tant qu'on n'a pas encore vérifié si un cookie de session valide existe déjà.
-    // Indispensable car les cookies httpOnly sont invisibles en JS   la seule façon de savoir
-    // si l'utilisateur est déjà connecté (ex: après un rafraîchissement de page) est de demander
-    // au back via une requête. Tant que cette requête n'a pas répondu, on ne sait pas encore.
-    const [loading, setLoading] = useState(true);
+        const [loading, setLoading] = useState(true);
 
     // Au tout premier chargement de l'app (montage du Provider), on vérifie
     // si un cookie accessToken valide existe déjà côté navigateur.

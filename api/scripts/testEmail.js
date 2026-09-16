@@ -11,7 +11,7 @@ const sendTestEmail = async () => {
     try {
         const { data, error } = await resend.emails.send({
             from: 'onboarding@resend.dev', // domaine de test fourni par Resend, fonctionne sans configuration DNS
-            to: 'costes.fl@gmail.com', // remplace par ton adresse réelle pour recevoir le test
+            to: 'costes.fl@gmail.com',
             subject: 'Test Resend   Le Bruisson Curieux',
             html: '<p>Si tu reçois ceci, Resend fonctionne correctement.</p>'
         });

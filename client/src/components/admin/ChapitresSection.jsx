@@ -1,7 +1,7 @@
 // Section de gestion des chapitres d'un article : liste, ajout, modification inline, suppression.
 // Rendue uniquement quand idArticle existe (contrôlé par le parent ArticleFormPage).
 // Bordure orange sur les champs pour repérer visuellement la zone "chapitres"
-// dans le formulaire complet de l'article.
+
 // La liste des chapitres existants est affichée avant le formulaire d'ajout.
 
 import { useEffect, useState } from "react";

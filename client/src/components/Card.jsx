@@ -1,9 +1,4 @@
 // Affiche une prestation, un projet ou un article.
-// Si stacks/lienDemo/lienRepo sont fournis (cas "projet"), les boutons correspondants
-// s'affichent conditionnellement   une prestation simple n'affiche que l'image/titre/comment.
-// Si path est fourni (cas "article" ou navigation interne future), un bouton de navigation
-// SPA s'affiche via Btn/Link   distinct des liens externes (lienDemo/lienRepo).
-
 import Btn from "./Btn";
 
 export default function Card({ image, title, comment, stacks, lienDemo, lienRepo, path, linkLabel = "En savoir plus" }) {

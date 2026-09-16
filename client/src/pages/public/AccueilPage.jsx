@@ -28,7 +28,7 @@ export default function AccueilPage() {
     return (
         <div>
             <div
-                className="bg-black text-white flex flex-col justify-center items-center min-height: 500px px-6"
+                className="bg-black text-white flex flex-col justify-center items-center min-height:500px px-6"
                 style={{
                     backgroundImage: `url(${heroImage})`,
                     backgroundSize: 'cover',

@@ -17,8 +17,6 @@ export default function FormInput({ label, id, type = "text", value, onChange, p
     const baseClassName = `w-full shadow-card p-3 ${className}`
     const textareaRef = useRef(null);
 
-    // Recalcule la hauteur à chaque changement de valeur   couvre la saisie clavier
-    // ET le pré-remplissage en mode édition (chargement d'un article existant).
     useEffect(() => {
         if (as === "textarea" && textareaRef.current) {
             textareaRef.current.style.height = "auto";

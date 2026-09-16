@@ -109,7 +109,7 @@ export default function ArticleFormPage() {
             }
 
             await api.put(`/api/articles/${currentId}/tags`, { tagIds: selectedTagIds });
-            // Pas de navigate()   on reste sur la page, les sections en dessous se débloquent
+            // Pas de navigate(), on reste sur la page, les sections en dessous se débloquent
         } catch (err) {
             toast.error(err.response?.data?.message || "Erreur lors de l'enregistrement.");
         } finally {
