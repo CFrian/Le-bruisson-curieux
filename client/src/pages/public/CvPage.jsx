@@ -1,4 +1,3 @@
-// CvPage.jsx
 // Page publique affichant le CV complet, récupéré depuis MongoDB.
 
 import { useEffect, useState } from "react";
@@ -21,7 +20,7 @@ export default function CvPage() {
     useEffect(() => {
         api.get('/api/cv')
             .then((response) => {
-                // Le CV est un document unique   si l'API renvoie un tableau, on prend le premier élément
+                // Le CV est un document unique   si l'API renvoie un tableau, on prend le premier élément opérateur ternaire.
                 const data = Array.isArray(response.data) ? response.data[0] : response.data;
                 setCv(data);
             })
@@ -40,7 +39,7 @@ export default function CvPage() {
             <ProfileCard image={cv.identite.photo} name={cv.identite.nom} />
             <div className="text-center">
                 <h2 className="text-2xl font-bold">{cv.identite.titre}</h2>
-                {cv.identite.statut && <p className="italic">{cv.identite.statut}</p>}
+                {cv.identite.statut && <p className="italic">{cv.identite.statut}</p>}  // rendu conditionnel
                 {cv.identite.recherche && <p>{cv.identite.recherche}</p>}
             </div>
 

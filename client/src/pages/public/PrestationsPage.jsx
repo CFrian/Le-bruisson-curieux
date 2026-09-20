@@ -1,10 +1,7 @@
-import ProfileCard from "../../components/ProfileCard"
 import SectionTitle from "../../components/SectionTitle"
 import PanelBorderLR from "../../components/PanelBorderLR"
-import Card from "../../components/Card"
 import Btn from "../../components/Btn"
 import PrestationsAccordion from "../../components/PrestationsAccordion"
-import imgProfil from "../../assets/images/COSTES_FLORIAN.jpg"
 import { prestations } from "../../data/prestations"
 
 export default function PrestationsPage() {

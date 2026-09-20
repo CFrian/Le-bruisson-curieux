@@ -52,7 +52,7 @@ const experienceSchema = new mongoose.Schema({
     contexte: String,
     type: {
         type: String,
-        enum: ['stage', 'salarie', 'freelance', 'auto-entrepreneur'],
+        enum: ['stage', 'salarie', 'freelance'],
         required: true
     },
     dateDebut: { type: Date, required: true },

@@ -95,8 +95,7 @@ const changePassword = async (userId, oldPassword, newPassword) => {
     })
 
     // Révoque toutes les sessions actives de cet utilisateur   si le mot de passe
-    // a été changé suite à une compromission (ou juste par prudence), on force
-    // une reconnexion partout, y compris sur d'éventuels autres appareils/navigateurs.
+    // a été changé, on force une reconnexion partout, y compris sur d'éventuels autres appareils/navigateurs.
     await refreshTokenRepository.deleteAllForUser(userId);
 }
 
@@ -109,8 +108,6 @@ const updateEmail = async (userId, newEmail, currentPassword) => {
     }
 
     // Vérifie le mot de passe actuel avant de changer l'email  
-    // même logique de sécurité que changePassword : une session active seule
-    // ne doit pas suffire à modifier une info sensible du compte.
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
         const error = new Error('Mot de passe incorrect');
@@ -173,7 +170,7 @@ const forgotPassword = async (email) => {
 
     await resend.emails.send({
         from: 'onboarding@resend.dev', // à remplacer par un domaine vérifié en prod
-        to: user.email,
+        to: 'costes.fl@gmail.com',
         subject: 'Réinitialisation de votre mot de passe',
         html: `
             <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>

@@ -1,7 +1,5 @@
-// AdminProjectsPage.jsx
-// Liste des projets côté admin   permet d'éditer ou supprimer chaque projet.
-// Route protégée (à vérifier via ta logique de route privée / AuthContext).
-
+// Liste des projets côté admin  --  permet d'éditer ou supprimer chaque projet.
+// Route protégée 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,7 +10,7 @@ import BackToDashboard from "../../components/BackToDashboard";
 
 
 export default function AdminProjectsPage() {
-    // Liste complète des projets récupérés depuis l'API
+
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
